@@ -37,11 +37,11 @@ class Vue {
   }
 
   compileTemplate(template) {
-    const mustacheList = template.match(/{{\s*(\w+)\s*}}/g) ?? [];
-    mustacheList.forEach(mustache => {
-      const key = mustache.replace(/{{\s*|\s*}}/g, '');
-      template = template.replace(mustache, this.data[key]);
-    });
+    // const mustacheList = template.match(/{{\s*(\w+)\s*}}/g) ?? [];
+    // mustacheList.forEach(mustache => {
+    //   const key = mustache.replace(/{{\s*|\s*}}/g, '');
+    //   template = template.replace(mustache, this.data[key]);
+    // });
     return template;
   }
 
@@ -61,20 +61,13 @@ class Vue {
         const value = el.getAttribute(attr);
         return /@|:/.test(type) && { type, name, value };
       }).filter(Boolean);
-      return attrs.length && {
-        el,
-        attrs
-      };
+      return attrs.length && {el,attrs};
     }).filter(Boolean);
     vElements.forEach(({ el, attrs }) => {
       attrs.forEach(({ type, name, value }) => {
         switch (type) {
-          case '@':
-            el.addEventListener(name, this.methods[value].bind(this.data));
-            break;
-          case ':':
-            el.setAttribute(name, this.data[value]);
-            break;
+          case '@':el.addEventListener(name, this.methods[value].bind(this.data));break;
+          case ':':el.setAttribute(name, this.data[value]);break;
         }
       });
     });
