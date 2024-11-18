@@ -38,16 +38,6 @@ class Vue {
     this.render();
   }
 
-  // compileTemplate(template) {
-  //   console.log(template);
-  //   const mustacheList = template.match(/{{\s*(\w+)\s*}}/g) ?? [];
-  //   mustacheList.forEach(mustache => {
-  //     const key = mustache.replace(/{{\s*|\s*}}/g, '');
-  //     template = template.replace(mustache, this.data[key]);
-  //   });
-  //   return template;
-  // }
-
   render() {
     this._activeDom.forEach(({ text, tem }) => {
       tem.matchAll(/{{\s*(\w+)\s*}}/g).forEach(m => {
@@ -70,41 +60,14 @@ class Vue {
         }
         if (/^:/.test(attr.name)) {
           const bindAttr = () => node.setAttribute(attr.name.slice(1), this.data[attr.value]);
-          bindAttr();
           this.data.track(bindAttr);
+          bindAttr();
         }
       });
       const MustacheTextList = [...node.childNodes].filter(e => e.nodeType === Node.TEXT_NODE).filter(e => /{{\s*\w+\s*}}/.test(e?.wholeText));
       MustacheTextList.forEach(text => {
         this._activeDom.push({ text, tem: text.wholeText });
-        // const render = (tem) => );
-        // render(text.wholeText);
-        // let tem = text.wholeText;
-        // const render = (tem) => {
-        //   tem.matchAll(/{{\s*(\w+)\s*}}/g).forEach(m => {
-        //     tem = tem.replace(m[0], this.data[m[1]]);
-        //   });
-        //   text.textContent = tem;
-        // };
-        // render(text.wholeText);
-        // this.data.track(() => render(text.wholeText));
       });
     }
   }
-
-  // applyVAttr(el) {
-  //   const attrWalker = document.createTreeWalker(el, NodeFilter.SHOW_ELEMENT, (node) => node.getAttributeNames().some(name => /@|:/.test(name)) ? NodeFilter.FILTER_ACCEPT : NodeFilter.FILTER_SKIP);
-  //   const vAttr = {
-  //     '@': (node, name, value) => node.addEventListener(name, this.methods[value].bind(this.data)),
-  //     ':': (node, name, value) => node.setAttribute(name, this.data[value])
-  //   };
-  //   while (attrWalker.nextNode()) {
-  //     const node = attrWalker.currentNode;
-  //     node.getAttributeNames().forEach(attrName => {
-  //       const name = attrName.slice(1);
-  //       const value = node.getAttribute(attrName);
-  //       vAttr[attrName[0]]?.(node, name, value);
-  //     });
-  //   }
-  // }
 }
