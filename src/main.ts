@@ -19,10 +19,6 @@ function reactive(obj: any) {
     listeners.add(fn)
   }
 
-  proxy.trigger = function (fn: Function) {
-    listeners.delete(fn)
-  }
-
   return proxy
 }
 
@@ -32,12 +28,14 @@ window.Vue = class Vue {
   methods: any
   template: string
   _activeDom: Array<{ text: Node, tem: string }>
+  _bindAttr: Array<Attr>
   constructor(options: any) {
     this.el = options.el
     this.data = reactive(options.data())
     this.methods = options.methods
     this.template = options.template
     this._activeDom = []
+    this._bindAttr = []
     this.init()
     this.data.track(this.render.bind(this))
     this.render()
