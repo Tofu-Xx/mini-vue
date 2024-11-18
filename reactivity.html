@@ -43,7 +43,7 @@
 <body>
   <div id="app">
     <div class="container">
-      <p id="p"></p>
+      <p id="p">count: {{ count }}</p>
       <input id="ipt" type="number" :value="count" @input="input" />
       <button id="inc" @click="increment">Increment</button>
       <button id="dec" @click="decrement">Decrease</button>
@@ -85,22 +85,32 @@
     const walker = document.createTreeWalker(app, NodeFilter.SHOW_ELEMENT);
     while (walker.nextNode()) {
       const node = walker.currentNode;
-      /* attr */
+      /* vAttr */
       [...node.attributes].forEach(attr => {
-        if (attr.name.startsWith('@')) 
+        if (attr.name.startsWith('@'))
           node[attr.name.replace('@', 'on')] = methods[attr.value].bind(data);
         if (attr.name.startsWith(':')) {
           const attrName = attr.name.slice(1);
-          effect(() => attrName in node ?(node[attrName] = data[attr.value]): node.setAttribute(attrName, data[attr.value]));
+          effect(() => attrName in node ? (node[attrName] = data[attr.value]) : node.setAttribute(attrName, data[attr.value]));
         }
       });
+      /* mustache */
+      node.childNodes.forEach(child => {
+        if (child.nodeType !== Node.TEXT_NODE) return;
+        const tem = child.textContent
+        effect(() => {
+          child.textContent = [...tem.matchAll(/\{\{(.*?)\}\}/g)].reduce((acc, cur) => {
+            return acc.replace(cur[0], data[cur[1].trim()]);
+          }, tem);
+        });
+      });
     }
-    effect(() => {
-      // bindAttrs.forEach(({ name, value }) => {
-      //   name in ipt ? (ipt[name] = data[value]) : ipt.setAttribute(name, value);
-      // });
-      p.textContent = `Count: ${data.count}`;
-    });
+    // effect(() => {
+    //   // bindAttrs.forEach(({ name, value }) => {
+    //   //   name in ipt ? (ipt[name] = data[value]) : ipt.setAttribute(name, value);
+    //   // });
+    //   p.textContent = `Count: ${data.count}`;
+    // });
   </script>
 </body>
 
