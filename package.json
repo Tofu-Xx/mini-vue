@@ -1,0 +1,34 @@
+{
+  "name": "mini-vue",
+  "type": "module",
+  "packageManager": "pnpm@9.13.2",
+  "author": "tofu-xx <tofu-xx@foxmail.com>",
+  "license": "MIT",
+  "funding": "https://github.com/sponsors/tofu-xx",
+  "homepage": "https://github.com/tofu-xx/mini-vue#readme",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/tofu-xx/mini-vue.git"
+  },
+  "bugs": "https://github.com/tofu-xx/mini-vue/issues",
+  "keywords": [],
+  "scripts": {
+    "start": "esno src/main.ts",
+    "build": "unbuild",
+    "dev": "unbuild --stub",
+    "up": "taze major -I",
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix"
+  },
+  "devDependencies": {
+    "@antfu/eslint-config": "^3.9.1",
+    "@antfu/ni": "^0.23.0",
+    "@types/node": "^22.9.0",
+    "bumpp": "^9.8.1",
+    "eslint": "^9.14.0",
+    "eslint-plugin-format": "^0.1.2",
+    "esno": "^4.8.0",
+    "taze": "^0.18.0",
+    "unbuild": "^2.0.0"
+  }
+}
