@@ -1,17 +1,11 @@
 {
   "compilerOptions": {
+    "target": "ESNext",
     "module": "ESNext",
-    "moduleResolution": "Bundler",
-    "target": "ES2020",
-    "jsx": "react",
-    "checkJs": true,
-    "allowJs": true,
-    "strictNullChecks": true,
-    "strictFunctionTypes": true,
-    "sourceMap": true
-  },
-  "exclude": [
-    "node_modules",
-    "**/node_modules/*"
-  ]
+    "lib": [
+      "DOM",
+      "ESNext",
+      "DOM.Iterable"
+    ]
+  }
 }

@@ -70,19 +70,7 @@
       }
     };
 
-    // const bindAttrs = [...ipt.attributes].map(attr => {
-    //   if (attr.name.startsWith(':'))
-    //     return {
-    //       attr,
-    //       name: attr.name.slice(1),
-    //       value: attr.value
-    //     };
-    // }).filter(Boolean);
-
-    // ipt['oninput'] = methods.input.bind(data);
-    // inc['onclick'] = methods.increment.bind(data);
-    // dec['onclick'] = methods.decrement.bind(data);
-    const walker = document.createTreeWalker(app, NodeFilter.SHOW_ELEMENT);
+    const walker = document.createTreeWalker(el, NodeFilter.SHOW_ELEMENT);
     while (walker.nextNode()) {
       const node = walker.currentNode;
       /* vAttr */
@@ -105,12 +93,6 @@
         });
       });
     }
-    // effect(() => {
-    //   // bindAttrs.forEach(({ name, value }) => {
-    //   //   name in ipt ? (ipt[name] = data[value]) : ipt.setAttribute(name, value);
-    //   // });
-    //   p.textContent = `Count: ${data.count}`;
-    // });
   </script>
 </body>
 
