@@ -1,3 +1,6 @@
+declare const VueReactiveity: any;
+const {reactive,effect} = VueReactiveity 
+
 type Opt = {
   el: string;
   data: Record<string, any>;

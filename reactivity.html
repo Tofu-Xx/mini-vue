@@ -44,13 +44,14 @@
   <div id="app">
     <div class="container">
       <p id="p"></p>
-      <input id="ipt" type="number" :value="count" />
-      <button id="inc">Increment</button>
-      <button id="dec">Decrease</button>
+      <input id="ipt" type="number" :value="count" @input="input" />
+      <button id="inc" @click="increment">Increment</button>
+      <button id="dec" @click="decrement">Decrease</button>
     </div>
   </div>
   <script>
     const { reactive, effect } = VueReactivity;
+    const el = document.querySelector('#app');
     const data = reactive({
       count: 0,
     });
@@ -68,28 +69,38 @@
         this.count = evt.target.value;
       }
     };
-    // Object.assign(data, methods);
 
-    const bindAttrs = [...ipt.attributes].map(attr => {
-      if (attr.name.startsWith(':'))
-        return {
-          attr,
-          name: attr.name.slice(1),
-          value: attr.value
-        };
-    }).filter(Boolean);
-    effect(() => {
-      // ipt.value = data.count;
-      bindAttrs.forEach(({ name, value }) => {
-        name in ipt ? (ipt[name] = data[value]) : ipt.setAttribute(name, value);
+    // const bindAttrs = [...ipt.attributes].map(attr => {
+    //   if (attr.name.startsWith(':'))
+    //     return {
+    //       attr,
+    //       name: attr.name.slice(1),
+    //       value: attr.value
+    //     };
+    // }).filter(Boolean);
+
+    // ipt['oninput'] = methods.input.bind(data);
+    // inc['onclick'] = methods.increment.bind(data);
+    // dec['onclick'] = methods.decrement.bind(data);
+    const walker = document.createTreeWalker(app, NodeFilter.SHOW_ELEMENT);
+    while (walker.nextNode()) {
+      const node = walker.currentNode;
+      /* attr */
+      [...node.attributes].forEach(attr => {
+        if (attr.name.startsWith('@')) 
+          node[attr.name.replace('@', 'on')] = methods[attr.value].bind(data);
+        if (attr.name.startsWith(':')) {
+          const attrName = attr.name.slice(1);
+          effect(() => attrName in node ?(node[attrName] = data[attr.value]): node.setAttribute(attrName, data[attr.value]));
+        }
       });
+    }
+    effect(() => {
+      // bindAttrs.forEach(({ name, value }) => {
+      //   name in ipt ? (ipt[name] = data[value]) : ipt.setAttribute(name, value);
+      // });
       p.textContent = `Count: ${data.count}`;
     });
-    ipt['oninput'] = methods.input.bind(data);
-    inc['onclick'] = methods.increment.bind(data);
-    dec['onclick'] = methods.decrement.bind(data);
-
-
   </script>
 </body>
 
