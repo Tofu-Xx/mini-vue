@@ -31,10 +31,11 @@ class Vue {
     this.el = options.el;
     this.data = reactive(options.data());
     this.methods = options.methods;
-    this.template = options.template
+    this.template = options.template;
+    this._activeDom = [];
     this.init();
-    // this.data.track(this.render.bind(this));
-    // this.render();
+    this.data.track(this.render.bind(this));
+    this.render();
   }
 
   // compileTemplate(template) {
@@ -47,13 +48,14 @@ class Vue {
   //   return template;
   // }
 
-  // render() {
-  //   const el = document.querySelector(this.el);
-  //   if (el) {
-  //     el.innerHTML = this.compileTemplate(this.template);
-  //     // this.applyVAttr(el);
-  //   }
-  // }
+  render() {
+    this._activeDom.forEach(({ text, tem }) => {
+      tem.matchAll(/{{\s*(\w+)\s*}}/g).forEach(m => {
+        tem = tem.replace(m[0], this.data[m[1]]);
+      });
+      text.textContent = tem;
+    });
+  }
 
   init() {
     const el = document.querySelector(this.el);
@@ -72,24 +74,37 @@ class Vue {
           this.data.track(bindAttr);
         }
       });
-      // const hasVAttr = node.getAttributeNames().some(name => /^@|^:/.test(name));
-      // const hasMustache = [...node.childNodes].filter(e=>e.nodeType === Node.TEXT_NODE).some(e=>/{{\s*\w+\s*}}/.test(e?.wholeText))
-    }
-  }
-
-  applyVAttr(el) {
-    const attrWalker = document.createTreeWalker(el, NodeFilter.SHOW_ELEMENT, (node) => node.getAttributeNames().some(name => /@|:/.test(name)) ? NodeFilter.FILTER_ACCEPT : NodeFilter.FILTER_SKIP);
-    const vAttr = {
-      '@': (node, name, value) => node.addEventListener(name, this.methods[value].bind(this.data)),
-      ':': (node, name, value) => node.setAttribute(name, this.data[value])
-    };
-    while (attrWalker.nextNode()) {
-      const node = attrWalker.currentNode;
-      node.getAttributeNames().forEach(attrName => {
-        const name = attrName.slice(1);
-        const value = node.getAttribute(attrName);
-        vAttr[attrName[0]]?.(node, name, value);
+      const MustacheTextList = [...node.childNodes].filter(e => e.nodeType === Node.TEXT_NODE).filter(e => /{{\s*\w+\s*}}/.test(e?.wholeText));
+      MustacheTextList.forEach(text => {
+        this._activeDom.push({ text, tem: text.wholeText });
+        // const render = (tem) => );
+        // render(text.wholeText);
+        // let tem = text.wholeText;
+        // const render = (tem) => {
+        //   tem.matchAll(/{{\s*(\w+)\s*}}/g).forEach(m => {
+        //     tem = tem.replace(m[0], this.data[m[1]]);
+        //   });
+        //   text.textContent = tem;
+        // };
+        // render(text.wholeText);
+        // this.data.track(() => render(text.wholeText));
       });
     }
   }
+
+  // applyVAttr(el) {
+  //   const attrWalker = document.createTreeWalker(el, NodeFilter.SHOW_ELEMENT, (node) => node.getAttributeNames().some(name => /@|:/.test(name)) ? NodeFilter.FILTER_ACCEPT : NodeFilter.FILTER_SKIP);
+  //   const vAttr = {
+  //     '@': (node, name, value) => node.addEventListener(name, this.methods[value].bind(this.data)),
+  //     ':': (node, name, value) => node.setAttribute(name, this.data[value])
+  //   };
+  //   while (attrWalker.nextNode()) {
+  //     const node = attrWalker.currentNode;
+  //     node.getAttributeNames().forEach(attrName => {
+  //       const name = attrName.slice(1);
+  //       const value = node.getAttribute(attrName);
+  //       vAttr[attrName[0]]?.(node, name, value);
+  //     });
+  //   }
+  // }
 }

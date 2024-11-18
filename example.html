@@ -40,14 +40,14 @@
 <body>
 	<div id="app">
 		<div class="container">
-			<p>Count: {{ count }}</p>
+			<p>{{count}}Count: {{ count }}</p>
 			<input type="number" :value="count" @input="input" />
 			<button @click="increment">Increment</button>
 			<button @click="decrement">Decrease</button>
 		</div>
 	</div>
 	<script>
-		new Vue({
+	 const app = 	new Vue({
 			el: '#app',
 			data() {
 				return {
