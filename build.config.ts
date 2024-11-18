@@ -1,20 +1,18 @@
-import path from 'node:path'
 import { defineBuildConfig } from 'unbuild'
 
 export default defineBuildConfig({
   failOnWarn: false,
-  declaration: true,
+  declaration: false,
   clean: true,
-  alias: {
-    '@': path.resolve(__dirname, 'src'),
-  },
   entries: ['src/main.ts'],
   rollup: {
-    emitCJS: true,
     inlineDependencies: true,
+    output: {
+      format: 'iife',
+    },
     esbuild: {
-      globalName: 'ph_reponame',
-      minify: true,
+      minify: false,
+      target: 'esnext',
     },
   },
 })
