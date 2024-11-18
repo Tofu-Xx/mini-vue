@@ -54,22 +54,20 @@ class Vue {
   }
 
   applyVAttr(el) {
-    const vElements = [...el.querySelectorAll('*')].map(el => {
-      const attrs = el.getAttributeNames().map(attr => {
-        const type = attr[0];
-        const name = attr.replace(type, '');
-        const value = el.getAttribute(attr);
-        return /@|:/.test(type) && { type, name, value };
-      }).filter(Boolean);
-      return attrs.length && {el,attrs};
-    }).filter(Boolean);
-    vElements.forEach(({ el, attrs }) => {
-      attrs.forEach(({ type, name, value }) => {
-        switch (type) {
-          case '@':el.addEventListener(name, this.methods[value].bind(this.data));break;
-          case ':':el.setAttribute(name, this.data[value]);break;
-        }
-      });
+    const walker = document.createTreeWalker(el, NodeFilter.SHOW_ELEMENT, (node) => {
+      return node.getAttributeNames().some(name => /@|:/.test(name)) ? NodeFilter.FILTER_ACCEPT : NodeFilter.FILTER_SKIP;
     });
+    const vAttr = {
+      '@': (node, name, value) => node.addEventListener(name, this.methods[value].bind(this.data)),
+      ':': (node, name, value) => node.setAttribute(name, this.data[value])
+    };
+    while (walker.nextNode()) {
+      const node = walker.currentNode;
+      node.getAttributeNames().forEach(attrName => {
+        const name = attrName.slice(1);
+        const value = node.getAttribute(attrName);
+        vAttr[attrName[0]]?.(node, name, value);
+      });
+    }
   }
 }
