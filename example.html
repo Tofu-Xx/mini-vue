@@ -4,7 +4,7 @@
 <head>
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<title>My Vue from Scratch</title>
+	<title>mini-vue</title>
 	<script src="./vue.js"></script>
 	<style>
 		@import "https://unpkg.com/@tofukit/resetcss";
@@ -41,7 +41,7 @@
 	<div id="app">
 		<div class="container">
 			<p>Count: {{ count }}</p>
-			<input type="text" :value="count" />
+			<input type="number" :value="count" @input="input" />
 			<button @click="increment">Increment</button>
 			<button @click="decrement">Decrease</button>
 		</div>
@@ -61,6 +61,9 @@
 				decrement() {
 					this.count--;
 				},
+				input(evt){
+					this.count = evt.target.value
+				}
 			},
 		});
 	</script>
