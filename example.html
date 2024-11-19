@@ -3,7 +3,7 @@
 	<link rel="stylesheet" href="https://unpkg.com/@tofukit/resetcss">
 	<!-- 以下写法于官方效果一致，取消注释查看官方CDN效果 -->
 	<!-- <script src="https://unpkg.com/vue@2"></script>  -->
-	<script src="./vue.js"></script>
+	<script src="./mini-vue.js"></script>
 </head>
 
 <body>
@@ -14,7 +14,7 @@
 </body>
 
 <script>
-	const app =  Vue({
+	new Vue({
 		el: '#app',
 		data: {
 			msg: 'hello mini-vue',
