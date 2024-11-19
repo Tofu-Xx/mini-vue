@@ -23,12 +23,9 @@ interface Window {
   Vue: any;
 }
 window.Vue = class Vue {
-  el: Element;
-  data: Opt["data"];
-  methods: Opt["methods"];
+  [key: string]: any;
   constructor(opt: Opt) {
-    this.el = opt.el instanceof Element? opt.el: document.querySelector(opt.el) 
-    if (!this.el) return
+    this.el = opt.el instanceof Element? opt.el: document.querySelector(opt.el) ?? document.createElement('main')
     this.data = reactive(opt.data);
     this.methods = opt.methods;
     this.#init();
@@ -46,9 +43,8 @@ window.Vue = class Vue {
         }
       });
       node.childNodes.forEach((child) => {
-        if (child.nodeType !== Node.TEXT_NODE) return;
-        const tem = child.textContent ?? "";
-        effect(() => child.textContent = [...tem.matchAll(/\{\{(.*?)\}\}/g)].reduce((acc, cur) => acc.replace(cur[0], this.data[cur[1].trim()]), tem))
+        const tem = child.nodeType === Node.TEXT_NODE && child.textContent
+        tem && effect(() => child.textContent = [...tem.matchAll(/\{\{(.*?)\}\}/g)].reduce((acc, cur) => acc.replace(cur[0], this.data[cur[1].trim()]), tem))
       });
     }
   }
