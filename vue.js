@@ -60,13 +60,6 @@ function effect(fn) {
     const _effect = () => (activeEffect = _effect, fn());
     _effect();
 }
-const depsMap = new Map();
-function track(key) {
-    let deps = depsMap.get(key);
-    deps || depsMap.set(key, deps = new Set());
-    deps.add(activeEffect);
-}
-const trigger = (key) => depsMap.get(key).forEach((effect) => effect());
-// function trigger(key: Key) {
-//   // const deps = ;
-// }
+const depsMap = Object.create(null);
+const track = (key) => (depsMap[key] ||= new Set()).add(activeEffect);
+const trigger = (key) => depsMap[key].forEach((effect) => effect());
