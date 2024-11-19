@@ -60,7 +60,7 @@
 			},
 			methods: {
 				increment() {
-					this.count++;
+					// this.count++;
 					this.count2++;
 				},
 				decrement() {
@@ -69,7 +69,6 @@
 				input(evt) {
 					this.count = evt.target.value;
 				},
-				change: () => console.log('change')
 			},
 			watch: {
 				count(val) {
