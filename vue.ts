@@ -25,7 +25,7 @@ interface Window {
 window.Vue = class Vue {
   [key: string]: any;
   constructor(opt: Opt) {
-    this.el = opt.el instanceof Element? opt.el: document.querySelector(opt.el) ?? document.createElement('main')
+    this.el = opt.el instanceof Element? opt.el: document.querySelector(opt.el) ?? document.createDocumentFragment();
     this.data = reactive(opt.data);
     this.methods = opt.methods;
     this.#init();
@@ -35,12 +35,8 @@ window.Vue = class Vue {
     while (walker.nextNode()) {
       const node = walker.currentNode as Element;
       [...node.attributes].forEach((attr) => {
-        if (attr.name.startsWith("@")) 
-          node[attr.name.replace("@", "on")] = this.methods[attr.value].bind(this.data);
-        if (attr.name.startsWith(":")) {
-          const attrName = attr.name.slice(1);
-          effect(() => attrName in node? (node[attrName] = this.data[attr.value]): node.setAttribute(attrName, this.data[attr.value]));
-        }
+        attr.name.startsWith("@") && node.addEventListener(attr.name.slice(1), this.methods[attr.value].bind(this.data))
+        attr.name.startsWith(":") && effect(() => node.setAttribute(node.slot = attr.name.slice(1), node[node.slot] = this.data[attr.value]));
       });
       node.childNodes.forEach((child) => {
         const tem = child.nodeType === Node.TEXT_NODE && child.textContent
