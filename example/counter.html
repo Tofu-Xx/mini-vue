@@ -26,15 +26,16 @@
     methods: {
       increment() {
         this.count++;
+      },
+      reached() {
+        alert('You have reached the maximum count of 3!');
+        this.count = 0;
       }
     },
     watch: {
       count(val, oldVal) {
         console.log(oldVal, '-->', val);
-        if (val > 3) {
-          alert('You have reached the maximum count of 3!');
-          this.count = 0;
-        }
+        if (val > 3) this.reached();
       }
     }
   });
