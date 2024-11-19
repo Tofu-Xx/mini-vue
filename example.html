@@ -43,7 +43,7 @@
 	<div id="app">
 		<div class="container">
 			<p>Count: {{ count }}</p>
-			<input type="number" :value="count" @input="input" />
+			<input type="number" :value="count" :v="v" @input="input" @change="change" />
 			<button @click="increment">Increment</button>
 			<button @click="decrement">Decrease</button>
 		</div>
@@ -54,17 +54,20 @@
 			el: '#app',
 			data: {
 				count: 0,
+				v: 'v'
 			},	
 			methods: {
 				increment() {
 					this.count++;
+					this.v+='v'
 				},
 				decrement() {
 					this.count--;
 				},
 				input(evt) {
 					this.count = evt.target.value;
-				}
+				},
+				change:()=>console.log('change')
 			},
 		});
 	</script>
