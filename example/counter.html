@@ -22,17 +22,15 @@
     el: '#app',
     data: {
       count: 0,
-      count2: 0
     },
     methods: {
       increment() {
         this.count++;
-        this.count2++;
       }
     },
     watch: {
-      count(val) {
-        console.log(this.count, this.count2);
+      count(val, oldVal) {
+        console.log(oldVal, '-->', val);
         if (val > 3) {
           alert('You have reached the maximum count of 3!');
           this.count = 0;
