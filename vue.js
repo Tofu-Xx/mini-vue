@@ -11,23 +11,12 @@ class Vue {
     this.#entry(this.el, document.createTreeWalker(this.el, NodeFilter.SHOW_ELEMENT));
   }
   #entry(node, walker) {
-    // [...node.attributes].forEach((attr) => attr.name[0] === "@" ? node.addEventListener(attr.name.slice(1), this.methods[attr.value].bind(this.data)) : attr.name[0] === ":" && this.#effect(() => node.setAttribute(node.__v__ = attr.name.slice(1), node[node.__v__] = this.data[attr.value])));
-    for (let attr of node.attributes) {
-      // attr.name[0] === "@" && node.addEventListener(attr.name.slice(1), this.methods[attr.value].bind(this.data));
-      // attr.name[0] === ":" && this.#effect(() => node.setAttribute(node.__v__ = attr.name.slice(1), node[node.__v__] = this.data[attr.value]));
-      switch (attr.name[0]) {
-        case "@":
-          node.addEventListener(attr.name.slice(1), this.methods[attr.value].bind(this.data));
-          break;
-        case ":":
-          // const name =  attr.name.slice(1);
-          this.#effect(() => node.setAttribute(node.__v__ = attr.name.slice(1), node[node.__v__] = this.data[attr.value]));
-          break;
-      }
+    const vAttr = {
+      '@': attr => node.addEventListener(attr.name.slice(1), this.methods[attr.value].bind(this.data)),
+      ':': attr => this.#effect(() => node.setAttribute(node.__v__ = attr.name.slice(1), node[node.__v__] = this.data[attr.value]))
     }
-    // node.childNodes.forEach((child) => (node.__v__ = child.nodeType === Node.TEXT_NODE && child.textContent) && this.#effect(() => child.textContent = [...node.__v__.matchAll(/\{\{(.*?)\}\}/g)].reduce((acc, cur) => acc.replace(cur[0], this.data[cur[1].trim()]), node.__v__)));
+    for (let attr of node.attributes) vAttr[attr.name[0]]?.(attr);
     for (let child of node.childNodes) {
-      // (node.__v__ = );
       const tem = child.nodeType === Node.TEXT_NODE && child.textContent;
       /{\{(.*?)\}\}/g.test(tem) && this.#effect(() => child.textContent = [...tem.matchAll(/\{\{(.*?)\}\}/g)].reduce((acc, cur) => acc.replace(cur[0], this.data[cur[1].trim()]), tem));
     }
