@@ -13,4 +13,4 @@
 
 \> [**example**](./example.html)
 
-\> [**source code**](./vue.js)
+\> [**source code**](./mini-vue.js)
