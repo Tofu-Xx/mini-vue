@@ -1,0 +1,43 @@
+<head>
+  <title>mini-vue | Counter</title>
+  <link rel="stylesheet" href="https://unpkg.com/@tofukit/resetcss">
+  <!-- <script src="https://unpkg.com/vue@2"></script> -->
+  <!-- <script src="https://cdn.jsdelivr.net/gh/Tofu-Xx/mini-vue/blob/main/mini-vue.js"></script> -->
+  <script src="../mini-vue.js"></script>
+  <style>
+    button {
+      margin: 20px auto;
+    }
+  </style>
+</head>
+
+<body>
+  <div id="app">
+    <button @click="increment">{{ count }}</button>
+  </div>
+</body>
+
+<script>
+  new Vue({
+    el: '#app',
+    data: {
+      count: 0,
+      count2: 0
+    },
+    methods: {
+      increment() {
+        this.count++;
+        this.count2++;
+      }
+    },
+    watch: {
+      count(val) {
+        console.log(this.count, this.count2);
+        if (val > 3) {
+          alert('You have reached the maximum count of 3!');
+          this.count = 0;
+        }
+      }
+    }
+  });
+</script>

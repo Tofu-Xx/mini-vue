@@ -15,6 +15,6 @@ function Vue(opt) {
       effect(() => node.data = node.__v__.reduce((acc, cur) => acc.replace(cur[0], that[cur[1]?.trim()]), node.__v_tem__));
     walker.nextNode() && entry?.bind(that)(walker.currentNode, walker, effect);
   })($el, document.createTreeWalker($el, NodeFilter.SHOW_ALL), fn => (_.active = fn, fn()));
-  Object.keys(opt.watch).forEach(k => _.deps[k]?.add(() => setTimeout(() => opt.watch[k]?.bind(that)(that[k]), 0)));
+  Object.keys(opt.watch).forEach(k => _.deps[k]?.add(() => Promise.resolve().then(() => opt.watch[k]?.bind(that)(that[k]))));
   opt.mounted?.bind(that)();
 };

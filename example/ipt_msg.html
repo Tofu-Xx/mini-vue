@@ -1,9 +1,8 @@
 <head>
-	<title>mini-vue</title>
+	<title>mini-vue | input message</title>
 	<link rel="stylesheet" href="https://unpkg.com/@tofukit/resetcss">
-	<!-- 以下写法于官方效果一致，取消注释查看官方CDN效果 -->
-	<!-- <script src="https://unpkg.com/vue@2"></script>  -->
-	<script src="./mini-vue.js"></script>
+	<script src="https://unpkg.com/vue@2"></script> 
+	<!-- <script src="../mini-vue.js"></script> -->
 </head>
 
 <body>
@@ -23,11 +22,6 @@
 			handleInput(evt) {
 				this.msg = evt.target.value;
 			},
-		},
-		watch: {
-			msg(val) {
-				console.log('count changed to', val);
-			}
 		},
 		mounted() {
 			this.$refs.ipt.focus();
