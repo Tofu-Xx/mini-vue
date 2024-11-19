@@ -1,5 +1,5 @@
-declare const VueReactivity: any;
-const { reactive, effect } = VueReactivity;
+// declare const VueReactivity: any;
+// const { reactive, effect } = VueReactivity;
 
 type Opt = {
   el: string | Element;
@@ -57,4 +57,45 @@ window.Vue = class Vue {
     }
   }
 };
-/*  */
+/* reactive */
+function reactive<T extends object>(target: T): T{
+  return new Proxy(target, {
+    get(target, key, receiver) {
+      const result = Reflect.get(target, key, receiver);
+      track(target, key);
+      return result;
+    },
+    set(target, key, value, receiver) {
+      const result = Reflect.set(target, key, value, receiver);
+      trigger(target, key);
+      return result;
+    }
+  });
+}
+
+/* effect */
+type Key = string | symbol;
+let activeEffect: any = null;
+function effect(fn: Function) {
+  const _effect = function () {
+    activeEffect = _effect;
+    fn();
+  };
+  _effect();
+}
+
+// const targetMap = new WeakMap();
+const depsMap = new Map();
+function track(target: any, key: Key) {
+  // let depsMap = targetMap.get(target);
+  // depsMap || targetMap.set(target, depsMap = new Map());
+  let deps = depsMap.get(key);
+  deps || depsMap.set(key, deps = new Set());
+  deps.add(activeEffect);
+}
+
+function trigger(target: any, key: Key) {
+  // const depsMap = targetMap.get(target);
+  const deps = depsMap.get(key);
+  deps.forEach((effect: Function) => effect());
+}
