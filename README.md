@@ -1,6 +1,14 @@
-# mini-vue
+<p align="right">
+  For entertainment only
+</p>
 
-#### 挑战20行代码复刻Vue.js!
+<h1 align="center">mini-vue</h1>
+
+<p align="right">
+  <b>English</b> | <a href="./README.zh-CN.md">简体中文</a>
+</p>
+
+
 #### Challenge to replicate Vue.js with just 20 lines of code.
 
 \> [**example**](./example.html)
