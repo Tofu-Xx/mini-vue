@@ -1,5 +1,3 @@
-// declare const VueReactivity: any;
-// const { reactive, effect } = VueReactivity;
 window.Vue = class Vue {
     el;
     data;
@@ -47,35 +45,28 @@ function reactive(target) {
     return new Proxy(target, {
         get(target, key, receiver) {
             const result = Reflect.get(target, key, receiver);
-            track(target, key);
+            track(key);
             return result;
         },
         set(target, key, value, receiver) {
             const result = Reflect.set(target, key, value, receiver);
-            trigger(target, key);
+            trigger(key);
             return result;
-        }
+        },
     });
 }
 let activeEffect = null;
 function effect(fn) {
-    const _effect = function () {
-        activeEffect = _effect;
-        fn();
-    };
+    const _effect = () => (activeEffect = _effect, fn());
     _effect();
 }
-// const targetMap = new WeakMap();
 const depsMap = new Map();
-function track(target, key) {
-    // let depsMap = targetMap.get(target);
-    // depsMap || targetMap.set(target, depsMap = new Map());
+function track(key) {
     let deps = depsMap.get(key);
     deps || depsMap.set(key, deps = new Set());
     deps.add(activeEffect);
 }
-function trigger(target, key) {
-    // const depsMap = targetMap.get(target);
-    const deps = depsMap.get(key);
-    deps.forEach((effect) => effect());
-}
+const trigger = (key) => depsMap.get(key).forEach((effect) => effect());
+// function trigger(key: Key) {
+//   // const deps = ;
+// }
