@@ -1,83 +1,36 @@
-<!DOCTYPE html>
-<html lang="en">
-
 <head>
-	<meta charset="UTF-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<title>mini-vue</title>
+	<link rel="stylesheet" href="https://unpkg.com/@tofukit/resetcss">
 	<!-- 以下写法于官方效果一致，取消注释查看官方CDN效果 -->
 	<!-- <script src="https://unpkg.com/vue@2"></script>  -->
 	<script src="./vue.js"></script>
-	<style>
-		@import "https://unpkg.com/@tofukit/resetcss";
-
-		.container {
-			padding: 20px;
-			border-radius: 10px;
-			box-shadow: 0 0 10px #0002;
-			width: fit-content;
-			margin: 50px auto;
-			font-size: x-large;
-			text-align: center;
-
-			button {
-				display: inline;
-				font-size: large;
-				padding: 10px 20px;
-				margin: 5px;
-				border: none;
-				border-radius: 5px;
-
-				&:hover {
-					background: #ddd;
-				}
-
-				&:active {
-					background: #ccc;
-				}
-			}
-		}
-	</style>
 </head>
 
 <body>
 	<div id="app">
-		<div class="container">
-			<p>Count: {{ count }}</p>
-			<p>Count2: {{ count2 }}</p>
-			<input type="number" :value="count" @input="input" />
-			<button @click="increment">Increment</button>
-			<button @click="decrement">Decrease</button>
-		</div>
+		<input :value="msg" @input="handleInput" ref="ipt"/>
+		<h1>{{ msg }}</h1>
 	</div>
-
-	<script>
-		const app = new Vue({
-			el: '#app',
-			data: {
-				count: 0,
-				count2: 0
-			},
-			methods: {
-				increment() {
-					// this.count++;
-					this.count2++;
-				},
-				decrement() {
-					this.count--;
-				},
-				input(evt) {
-					this.count = evt.target.value;
-				},
-			},
-			watch: {
-				count(val) {
-					console.log('count changed to', val);
-					console.log('count2', this.count2)
-				}
-			}
-		});
-	</script>
 </body>
 
-</html>
+<script>
+	const app = new Vue({
+		el: '#app',
+		data: {
+			msg: 'hello mini-vue',
+		},
+		methods: {
+			handleInput(evt) {
+				this.msg = evt.target.value;
+			},
+		},
+		watch: {
+			msg(val) {
+				console.log('count changed to', val);
+			}
+		},
+		mounted() {
+			this.$refs.ipt.focus();
+		},
+	});
+</script>
