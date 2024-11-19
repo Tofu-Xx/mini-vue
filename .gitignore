@@ -1,1 +1,2 @@
-*.ts
+vue.ts
+tsconfig.json
