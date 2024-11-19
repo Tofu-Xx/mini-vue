@@ -3,9 +3,9 @@ class Vue {
   static #activeEffect = null;
   constructor (opt) {
     this.el = opt.el instanceof Element ? opt.el : document.querySelector(opt.el) ?? document.createDocumentFragment();
-    this.data = new Proxy(opt.data, {
+    this.data = new Proxy(opt.data instanceof Function? opt.data() : opt.data, {
       get: (...args) => [Reflect.get(...args), (Vue.#depsMap[args[1]] ||= new Set()).add(Vue.#activeEffect)][0],
-      set: (...args) => [Reflect.set(...args), Vue.#depsMap[args[1]].forEach((effect) => effect())][0]
+      set: (...args) => [Reflect.set(...args), Vue.#depsMap[args[1]].forEach(effect => effect())][0]
     });
     this.methods = opt.methods;
     this.#entry(this.el, document.createTreeWalker(this.el, NodeFilter.SHOW_ELEMENT));
@@ -22,9 +22,7 @@ class Vue {
     }
     walker.nextNode() && this.#entry(walker.currentNode, walker);
   }
-  #effect(fn) {
-    return (function _effect() {
-      Vue.#activeEffect = _effect, fn();
-    })();
-  }
+  #effect = fn => (function _effect() {
+    Vue.#activeEffect = _effect, fn();
+  })()
 };

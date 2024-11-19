@@ -6,7 +6,7 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<title>mini-vue</title>
 	<script src="./vue.js"></script>
-	 <!-- <script src="https://unpkg.com/vue@2"></script> -->
+	<!-- <script src="https://unpkg.com/vue@2"></script> -->
 	<style>
 		@import "https://unpkg.com/@tofukit/resetcss";
 
@@ -48,18 +48,20 @@
 			<button @click="decrement">Decrease</button>
 		</div>
 	</div>
-	
+
 	<script>
 		new Vue({
 			el: '#app',
-			data: {
-				count: 0,
-				v: 'v'
-			},	
+			data() {
+				return {
+					count: 0,
+					v: 'v'
+				};
+			},
 			methods: {
 				increment() {
 					this.count++;
-					this.v+='v'
+					this.v += 'v';
 				},
 				decrement() {
 					this.count--;
@@ -67,7 +69,7 @@
 				input(evt) {
 					this.count = evt.target.value;
 				},
-				change:()=>console.log('change')
+				change: () => console.log('change')
 			},
 		});
 	</script>
