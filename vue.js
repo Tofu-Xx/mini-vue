@@ -1,3 +1,22 @@
+let activeEffect = null;
+function effect(fn) {
+    const _effect = () => (activeEffect = _effect, fn());
+    _effect();
+}
+const depsMap = Object.create(null);
+const track = (key) => (depsMap[key] ||= new Set()).add(activeEffect);
+const trigger = (key) => depsMap[key].forEach((effect) => effect());
+/* reactive */
+const createHandler = (type) => (...args) => {
+    const res = Reflect[type](...args);
+    type === "get" && track(args[0]);
+    type === "set" && trigger(args[0]);
+    return res;
+};
+const reactive = (target) => new Proxy(target, {
+    get: createHandler("get"),
+    set: createHandler("set"),
+});
 window.Vue = class Vue {
     el;
     data;
@@ -40,26 +59,3 @@ window.Vue = class Vue {
         }
     }
 };
-/* reactive */
-function reactive(target) {
-    return new Proxy(target, {
-        get(target, key, receiver) {
-            const result = Reflect.get(target, key, receiver);
-            track(key);
-            return result;
-        },
-        set(target, key, value, receiver) {
-            const result = Reflect.set(target, key, value, receiver);
-            trigger(key);
-            return result;
-        },
-    });
-}
-let activeEffect = null;
-function effect(fn) {
-    const _effect = () => (activeEffect = _effect, fn());
-    _effect();
-}
-const depsMap = Object.create(null);
-const track = (key) => (depsMap[key] ||= new Set()).add(activeEffect);
-const trigger = (key) => depsMap[key].forEach((effect) => effect());
