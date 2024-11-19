@@ -6,6 +6,7 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<title>mini-vue</title>
 	<script src="./vue.js"></script>
+	 <!-- <script src="https://unpkg.com/vue@2"></script> -->
 	<style>
 		@import "https://unpkg.com/@tofukit/resetcss";
 
@@ -57,15 +58,12 @@
 			},	
 			methods: {
 				increment() {
-					console.log('increment');
 					this.count++;
 				},
 				decrement() {
-					console.log('decrement');
 					this.count--;
 				},
 				input(evt) {
-					console.log('input');
 					this.count = evt.target.value;
 				}
 			},

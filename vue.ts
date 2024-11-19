@@ -1,33 +1,18 @@
 /* effect */
 type Key = string | symbol;
 let activeEffect: any = null;
-function effect(fn: Function) {
-  const _effect = () => (activeEffect = _effect, fn());
-  _effect();
-}
+const effect = (fn: Function) => (function _effect() {
+  activeEffect = _effect,fn();
+})();
 const depsMap = Object.create(null);
 const track = (key: Key) => (depsMap[key] ||= new Set()).add(activeEffect);
 const trigger = (key: Key) => depsMap[key].forEach((effect: Function) => effect());
 /* reactive */
-// const createHandler = (type: "get" | "set") =>  (...args: [any, any,any]) => {
-//     const res = Reflect[type](...args);
-//     type === "get" && track(args[0]);
-//     type === "set" && trigger(args[0]);
-//     return res;
-// };
-// const reactive = <T extends object>(target: T) => new Proxy(target, {
-//   get: createHandler("get"),
-//   set: createHandler("set"),
-// });
 type HandlerMap = ["get" | "set", (key: Key) => void][];
-const createHandler = () => Object.fromEntries(([['get',track],['set',trigger]] as HandlerMap).map(([type,toDeps])=>[
-  type,
-  (...args: [any, any, any])=>{
+const reactive = <T extends object>(target: T) => new Proxy(target, ([['get',track],['set',trigger]] as HandlerMap).reduce((acc,[type,toDeps])=>(acc[type] = (...args: [any, any, any])=>{
   const res = Reflect[type](...args);
-  toDeps(args[1]);
-  return res;
-}]));
-const reactive = <T extends object>(target: T) => new Proxy(target, createHandler());
+  return toDeps(args[1]), res;
+}, acc),{}));
 /* Vue */
 type Opt = {
   el: string | Element;
@@ -42,7 +27,8 @@ window.Vue = class Vue {
   data: Opt["data"];
   methods: Opt["methods"];
   constructor(opt: Opt) {
-    this.el = opt.el instanceof Element? opt.el: document.querySelector(opt.el) ?? document.body;
+    this.el = opt.el instanceof Element? opt.el: document.querySelector(opt.el) 
+    if (!this.el) return
     this.data = reactive(opt.data);
     this.methods = opt.methods;
     this.#init();

@@ -1,26 +1,22 @@
 let activeEffect = null;
-function effect(fn) {
-    const _effect = () => (activeEffect = _effect, fn());
-    _effect();
-}
+const effect = (fn) => (function _effect() {
+    activeEffect = _effect, fn();
+})();
 const depsMap = Object.create(null);
 const track = (key) => (depsMap[key] ||= new Set()).add(activeEffect);
 const trigger = (key) => depsMap[key].forEach((effect) => effect());
-const createHandler = () => Object.fromEntries([['get', track], ['set', trigger]].map(([type, toDeps]) => [
-    type,
-    (...args) => {
-        const res = Reflect[type](...args);
-        toDeps(args[1]);
-        return res;
-    }
-]));
-const reactive = (target) => new Proxy(target, createHandler());
+const reactive = (target) => new Proxy(target, [['get', track], ['set', trigger]].reduce((acc, [type, toDeps]) => (acc[type] = (...args) => {
+    const res = Reflect[type](...args);
+    return toDeps(args[1]), res;
+}, acc), {}));
 window.Vue = class Vue {
     el;
     data;
     methods;
     constructor(opt) {
-        this.el = opt.el instanceof Element ? opt.el : document.querySelector(opt.el) ?? document.body;
+        this.el = opt.el instanceof Element ? opt.el : document.querySelector(opt.el);
+        if (!this.el)
+            return;
         this.data = reactive(opt.data);
         this.methods = opt.methods;
         this.#init();
