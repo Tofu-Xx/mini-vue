@@ -14,19 +14,17 @@ window.Vue = class Vue {
         this.el = opt.el instanceof Element ? opt.el : document.querySelector(opt.el) ?? document.createDocumentFragment();
         this.data = reactive(opt.data);
         this.methods = opt.methods;
-        this.#init(document.createTreeWalker(this.el, NodeFilter.SHOW_ELEMENT));
+        this.#entry(this.el, document.createTreeWalker(this.el, NodeFilter.SHOW_ELEMENT));
     }
-    #init(walker) {
-        while (walker.nextNode()) {
-            const node = walker.currentNode;
-            [...node.attributes].forEach((attr) => {
-                attr.name.startsWith("@") && node.addEventListener(attr.name.slice(1), this.methods[attr.value].bind(this.data));
-                attr.name.startsWith(":") && effect(() => node.setAttribute(node.slot = attr.name.slice(1), node[node.slot] = this.data[attr.value]));
-            });
-            node.childNodes.forEach((child) => {
-                const tem = child.nodeType === Node.TEXT_NODE && child.textContent;
-                tem && effect(() => child.textContent = [...tem.matchAll(/\{\{(.*?)\}\}/g)].reduce((acc, cur) => acc.replace(cur[0], this.data[cur[1].trim()]), tem));
-            });
-        }
+    #entry(node, walker) {
+        [...node.attributes].forEach((attr) => {
+            attr.name.startsWith("@") && node.addEventListener(attr.name.slice(1), this.methods[attr.value].bind(this.data));
+            attr.name.startsWith(":") && effect(() => node.setAttribute(node.slot = attr.name.slice(1), node[node.slot] = this.data[attr.value]));
+        });
+        node.childNodes.forEach((child) => {
+            const tem = child.nodeType === Node.TEXT_NODE && child.textContent;
+            tem && effect(() => child.textContent = [...tem.matchAll(/\{\{(.*?)\}\}/g)].reduce((acc, cur) => acc.replace(cur[0], this.data[cur[1].trim()]), tem));
+        });
+        walker.nextNode() && this.#entry(walker.currentNode, walker);
     }
 };
