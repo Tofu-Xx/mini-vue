@@ -10,7 +10,26 @@
 
 Minimal Vue implementation (996 Bytes)
 
+### 🎉 achieved
+
+##### Options
+
+```ts
+interface Options  {
+  el?: string|Element,
+  data?: Object|() => Object,
+  methods?: Record<string, Function>,
+  watch?: Record<string, (val: any, oldVal: any) => void>,
+  mounted?: Function,
+}
+```
+
+##### Others
+
+:attr, @event, {{ }}, ref, this.$refs, this.$el,
+
 ### 🎯 use case
+- [demon](./examples/demon.html)
 - [counter](./examples/counter.html)
 - [ipt-msg](./examples/ipt-msg.html)
 
