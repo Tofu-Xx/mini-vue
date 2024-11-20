@@ -4,11 +4,10 @@ function Vue(opt) {
   const $el = opt.el?.at ? document.querySelector(opt.el) : opt.el ?? document;
   const that = Object.assign(new Proxy(typeof opt.data == 'object' ? opt.data : opt.data?.() ?? {}, {
     get: (...args) => [Reflect.get(...args), (deps[args[1]] ??= new Set()).add(active)][0],
-    set: (...args) => [Reflect.set(...args), deps[args[1]]?.forEach(f => (console.log(f), f?.()))][0],
+    set: (...args) => [Reflect.set(...args), deps[args[1]]?.forEach(f => f?.())][0],
   }), opt.methods, { $el, $refs: {} });
   const thatKeyRex = new RegExp(Object.keys(that).join('\\b|').replaceAll('$', '\\$'), 'g');
   function parseExpression(raw) {
-    console.log(thatKeyRex);
     const expr = raw.replace(thatKeyRex, k => 'that.' + k);
     return eval(expr);
   }
@@ -17,7 +16,7 @@ function Vue(opt) {
     const { nodeType, data: tem } = node;
     if (nodeType == 1) for (const { name, value: raw } of node.attributes) {
       name == 'ref' && (that.$refs[raw] = node);
-      name[0] == '@' && (node[name.replace('@', 'on')] = that[raw].bind(that));
+      name[0] == '@' && (node[name.replace('@', 'on')] = that[raw]?.bind(that));
       if (name[0] == ':') {
         const bindName = name.slice(1);
         effect(() => node.setAttribute(bindName, node[bindName] = parseExpression(raw)));

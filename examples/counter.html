@@ -15,6 +15,7 @@
 <body>
   <div id="app">
     <button @click="increment">{{ count }}</button>
+    <div ref="container"></div>
   </div>
 </body>
 
@@ -29,13 +30,13 @@
         this.count++;
       },
       reached() {
-        alert('You have reached the maximum count');
+        alert('You have reached the maximum count of 3!');
         this.count = 0;
       }
     },
     watch: {
       count(val, oldVal) {
-        console.log(oldVal, '-->', val);
+        this.$refs.container.innerHTML += `<p>${oldVal} --> ${val}</p>`;
         if (val > 3) this.reached();
       }
     }
