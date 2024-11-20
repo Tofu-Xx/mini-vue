@@ -22,19 +22,19 @@
 		"*.js"
 	],
 	"scripts": {
-    "release": "bumpp -no-push && nr build && pnpm publish",
-    "up": "taze major -I",
+		"release": "bumpp -no-push && nr build && pnpm publish",
+		"up": "taze major -I",
 		"build": "swc vue.js -o vue.min.js"
 	},
 	"devDependencies": {
-		"@swc/core": "^1.9.2",
 		"@swc/cli": "^0.5.1",
-    "bumpp": "^9.8.1",
-    "taze": "^0.18.0"
+		"@swc/core": "^1.9.2",
+		"bumpp": "^9.8.1",
+		"taze": "^0.18.0"
 	},
 	"publishConfig": {
 		"registry": "https://registry.npmjs.org/",
 		"access": "public"
 	},
-	"packageManager": "pnpm@9.14.1+sha512.7f1de9cffea40ff4594c48a94776112a0db325e81fb18a9400362ff7b7247f4fbd76c3011611c9f8ac58743c3dc526017894e07948de9b72052f874ee2edfdcd"
+	"packageManager": "pnpm@9.14.2"
 }
