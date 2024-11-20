@@ -1,0 +1,54 @@
+<head>
+  <title>vueey | demon</title>
+  <link rel="stylesheet" href="https://unpkg.com/@tofukit/resetcss">
+  <!-- vueey写法和效果于官方一致，解开注释，查看官方效果 -->
+  <!-- <script src="https://unpkg.com/vue@2"></script> -->
+  <script src="../vue.js"></script>
+</head>
+
+<body>
+  <div id="app">
+    <p>{{ count }} * {{ count }} = {{ count * count }}</p>
+    <button @click="inc">inc</button>
+    <button @click="inc()">inc()</button>
+    <button @click="count++">add</button>
+    <button @click="fns.add">{{ fns.add.name }} ❌</button>
+    <!--  -->
+    <p>
+      {{ msg }}
+      <span ref="showKey"></span>
+    </p>
+    <input :value="msg" @input="ipt">
+    <input :value="getMsg()" @change="log($event)">
+    <input :value="'vue'+`ey`" @keyup="$refs.showKey.textContent = $event.key">
+  </div>
+</body>
+
+<script>
+  new Vue({
+    el: '#app',
+    data: {
+      msg: 'Vueey',
+      count: 0,
+      fns: {
+        add() {
+          this.count++;
+        }
+      }
+    },
+    methods: {
+      inc() {
+        this.count++;
+      },
+      ipt(evt) {
+        this.msg = evt.target.value;
+      },
+      log(evt) {
+        console.log(evt.target.value);
+      },
+      getMsg() {
+        return this.msg;
+      }
+    }
+  })
+</script>
