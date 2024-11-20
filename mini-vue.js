@@ -21,14 +21,14 @@ function Vue(opt) {
       const matches = Array(...tem.matchAll(/\{\{(.*?)\}\}/g));
       matches[0] && effect(() => node.data = matches.reduce((acc, cur) => acc.replace(cur[0], that[cur[1].trim()]), tem));
     }
-    walker.nextNode() ? walk(walker, effect) : opt.mounted?.bind(that)();
-  }
+    walker.nextNode() ? walk(walker, effect) : opt.mounted?.call(that);
+  };
   walk(document.createTreeWalker($el, 7), fn => (active = fn, fn()));
   for (const [k, f] of Object.entries(opt.watch ?? {})) {
     let oldVal = that[k];
     deps[k].add(() => Promise.resolve().then(() => {
       const val = that[k];
-      f.bind(that)(val, oldVal);
+      f.call(that, val, oldVal);
       oldVal = val;
     }));
   }
