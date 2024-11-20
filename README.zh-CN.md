@@ -8,7 +8,7 @@
   <a href="./README.md">English</a> | <b>简体中文</b>
 </p>
 
-最小化的 Vue 实现
+最小化的 Vue 实现 (996 Bytes)
 
 ### 🎯 用例
 - [counter](./examples/counter.html)

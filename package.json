@@ -17,7 +17,7 @@
 		"minify",
 		"minimal"
 	],
-	"main": "./vue.min.mjs",
+	"main": "./vue.min.js",
 	"files": [
 		"*.js"
 	],
