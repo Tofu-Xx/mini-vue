@@ -24,7 +24,7 @@
 	"scripts": {
     "release": "bumpp -no-push && nr build && pnpm publish",
     "up": "taze major -I",
-		"build": "swc mini-vue.js -o mini-vue.min.js"
+		"build": "swc vue.js -o vue.min.js"
 	},
 	"devDependencies": {
 		"@swc/core": "^1.9.2",
