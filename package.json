@@ -1,7 +1,7 @@
 {
 	"name": "vueey",
 	"type": "module",
-	"version": "0.0.1-beta.1",
+	"version": "0.0.1-beta.2",
 	"description": "🤓 50 lines of code write Vue.js | 50行代码敲出Vue.js",
 	"author": "tofu-xx <tofu-xx@foxmail.com>",
 	"license": "MIT",
