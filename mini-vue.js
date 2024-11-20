@@ -8,7 +8,8 @@ function Vue(opt) {
   }), opt.methods, { $el, $refs: {} });
   const walk = (walker, effect) => {
     const node = walker.currentNode;
-    if (node.nodeType == 1) for (const { name, value } of node.attributes) {
+    const { nodeType, data: tem } = node;
+    if (nodeType == 1) for (const { name, value } of node.attributes) {
       name == 'ref' && (that.$refs[value] = node);
       name[0] == '@' && (node[name.replace('@', 'on')] = that[value].bind(that));
       if (name[0] == ':') {
@@ -16,13 +17,12 @@ function Vue(opt) {
         effect(() => node.setAttribute(bindName, node[bindName] = that[value]));
       }
     }
-    if (node.nodeType == 3) {
-      const tem = node.data;
+    if (nodeType == 3) {
       const matches = Array(...tem.matchAll(/\{\{(.*?)\}\}/g));
       matches[0] && effect(() => node.data = matches.reduce((acc, cur) => acc.replace(cur[0], that[cur[1].trim()]), tem));
     }
     walker.nextNode() ? walk(walker, effect) : opt.mounted?.bind(that)();
-  };
+  }
   walk(document.createTreeWalker($el, 7), fn => (active = fn, fn()));
   for (const [k, f] of Object.entries(opt.watch ?? {})) {
     let oldVal = that[k];

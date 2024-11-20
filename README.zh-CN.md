@@ -8,7 +8,7 @@
   <a href="./README.md">English</a> | <b>简体中文</b>
 </p>
 
-挑战20行代码复刻Vue.js!
+最小化的 Vue 实现
 
 ### 🎯 用例
 - [counter](./examples/counter.html)

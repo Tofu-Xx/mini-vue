@@ -8,7 +8,7 @@
   <b>English</b> | <a href="./README.zh-CN.md">简体中文</a>
 </p>
 
-Challenge to replicate Vue.js with just 20 lines of code.
+Minimal Vue implementation
 
 ### 🎯 use case
 - [counter](./examples/counter.html)
