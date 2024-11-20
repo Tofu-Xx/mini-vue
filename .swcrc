@@ -1,0 +1,12 @@
+{
+  "$schema": "https://swc.nodejs.cn/schema.json",
+  "minify": true,
+  "jsc": {
+    "minify": {
+      "mangle": {
+        "toplevel": false
+      }
+    },
+    "target": "esnext"
+  }
+}

@@ -1,5 +1,6 @@
 function Vue(opt) {
-  const _ = { deps: Object.create(null), active: () => void 0 };
+  const deps = Object.create(null);
+  const _ = { deps };
   const $el = opt?.el instanceof Element ? opt?.el : document.querySelector(opt?.el) ?? document.createDocumentFragment();
   const that = Object.assign(new Proxy(opt?.data instanceof Function ? opt?.data() : opt?.data, {
     get: (...args) => [Reflect.get(...args), (_.deps[args[1]] ||= new Set()).add(_.active)][0],
