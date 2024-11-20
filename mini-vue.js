@@ -1,8 +1,7 @@
 function Vue(opt) {
   let active;
   const deps = {};
-  const $el = opt.el?.at ? document.querySelector(opt.el) : opt.el;
-  if (!$el) return;
+  const $el = opt.el?.at ? document.querySelector(opt.el) : opt.el ?? document;
   const that = Object.assign(new Proxy(typeof opt.data == 'object' ? opt.data : opt.data?.() ?? {}, {
     get: (...args) => [Reflect.get(...args), (deps[args[1]] ??= new Set()).add(active)][0],
     set: (...args) => [Reflect.set(...args), deps[args[1]]?.forEach(f => f())][0],
