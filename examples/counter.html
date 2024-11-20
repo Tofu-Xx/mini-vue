@@ -14,7 +14,7 @@
 
 <body>
   <div id="app">
-    <button @click="increment">{{ count }}</button>
+    <button @click="count++">{{ count }}</button>
     <div ref="container"></div>
   </div>
 </body>
@@ -26,11 +26,8 @@
       count: 0,
     },
     methods: {
-      increment() {
-        this.count++;
-      },
       reached() {
-        alert('You have reached the maximum count of 3!');
+        alert('You have reached the maximum count!');
         this.count = 0;
       }
     },
