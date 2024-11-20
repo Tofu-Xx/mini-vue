@@ -4,7 +4,7 @@
 
 <h1 align="center">mini-vue</h1>
 
-<p align="right">
+<p align="center">
   <a href="./README.md">English</a> | <b>简体中文</b>
 </p>
 
