@@ -8,9 +8,12 @@
   <a href="./README.md">English</a> | <b>简体中文</b>
 </p>
 
+挑战20行代码复刻Vue.js!
 
-#### 挑战20行代码复刻Vue.js!
+### 🎯 用例
+- [counter](./example/counter.html)
+- [ipt-msg](./example/ipt-msg.html)
+- [todo-list](./example/todo-list.html)
 
-\> [**示例**](./example.html)
-
-\> [**源码**](./mini-vue.js)
+### ⌨️ 源码
+- [mini-vue.js](./mini-vue.js)
