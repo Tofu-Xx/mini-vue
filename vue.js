@@ -6,6 +6,12 @@ function Vue(opt) {
     get: (...args) => [Reflect.get(...args), (deps[args[1]] ??= new Set()).add(active)][0],
     set: (...args) => [Reflect.set(...args), deps[args[1]]?.forEach(f => f())][0],
   }), opt.methods, { $el, $refs: {} });
+  const thatKeyRex = new RegExp(Object.keys(that).join('\\b|').replaceAll('$', '\\$'), 'g');
+  function parseExpression(raw) {
+    console.log(thatKeyRex);
+    const expr = raw.replace(thatKeyRex, k => 'that.'+k);
+    return eval(expr);
+  }
   const walk = (walker, effect) => {
     const node = walker.currentNode;
     const { nodeType, data: tem } = node;
@@ -18,8 +24,7 @@ function Vue(opt) {
       }
     }
     if (nodeType == 3) {
-      const matches = Array(...tem.matchAll(/\{\{(.*?)\}\}/g));
-      matches[0] && effect(() => node.data = matches.reduce((acc, cur) => acc.replace(cur[0], that[cur[1].trim()]), tem));
+      node.data = tem.replace(/\{\{(.*?)\}\}/g, (_, raw) => parseExpression(raw));
     }
     walker.nextNode() ? walk(walker, effect) : opt.mounted?.call(that);
   };
