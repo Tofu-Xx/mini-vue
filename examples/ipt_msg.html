@@ -2,8 +2,8 @@
   <title>mini-vue | input message</title>
   <link rel="stylesheet" href="https://unpkg.com/@tofukit/resetcss">
   <!-- <script src="https://unpkg.com/vue@2"></script> -->
-  <!-- <script src="https://cdn.jsdelivr.net/gh/tofu-xx/mini-vue/mini-vue.js"></script> -->
-  <script src="../mini-vue.min.js"></script>
+  <!-- <script src="https://cdn.jsdelivr.net/gh/tofu-xx/mini-vue/mini-vue.min.js"></script> -->
+  <script src="../mini-vue.js"></script>
   <style>
     #app {
       margin: 20px;
@@ -16,14 +16,14 @@
 </head>
 
 <body>
-  <div id="app">
+  <div id="appp">
     <input :value="msg" @input="handleInput" ref="ipt" />
     <h1>{{ msg }}</h1>
   </div>
 </body>
 
 <script>
-  new Vue({
+  const app = new Vue({
     el: document.querySelector('#app'),
     data: () => ({
       msg: 'hello mini-vue',
