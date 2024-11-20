@@ -11,9 +11,9 @@
 Challenge to replicate Vue.js with just 20 lines of code.
 
 ### 🎯 use case
-- [counter](./example/counter.html)
-- [ipt-msg](./example/ipt-msg.html)
-- [todo-list](./example/todo-list.html)
+- [counter](./examples/counter.html)
+- [ipt-msg](./examples/ipt-msg.html)
+- [todo-list](./examples/todo-list.html)
 
 ### ⌨️ source code
 - [mini-vue.js](./mini-vue.js)

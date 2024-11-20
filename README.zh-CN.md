@@ -11,9 +11,9 @@
 挑战20行代码复刻Vue.js!
 
 ### 🎯 用例
-- [counter](./example/counter.html)
-- [ipt-msg](./example/ipt-msg.html)
-- [todo-list](./example/todo-list.html)
+- [counter](./examples/counter.html)
+- [ipt-msg](./examples/ipt-msg.html)
+- [todo-list](./examples/todo-list.html)
 
 ### ⌨️ 源码
 - [mini-vue.js](./mini-vue.js)

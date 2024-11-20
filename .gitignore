@@ -1,6 +1,5 @@
-**/*
-*
-!.gitignore
-!*.md
-!*.js
-!examples/
+/**
+!/.gitignore
+!/*.md
+!/**/*.js
+!/examples/
