@@ -3,3 +3,4 @@
 !/*.md
 !/**/*.js
 !/examples/
+!/examples/**/*
