@@ -8,13 +8,12 @@ function Vue(opt) {
   }), opt.methods, { $el, $refs: {} });
   const walk = (walker, effect) => {
     const node = walker.currentNode;
-    if (node.nodeType == 1) for (let attr of node.attributes) {
-      attr.name == 'ref' && (that.$refs[attr.value] = node);
-      attr.name[0] == '@' && (node[attr.name.replace('@', 'on')] = that[attr.value].bind(that));
-      // attr.name[0] == '@' && node.addEventListener(attr.name.slice(1), that[attr.value].bind(that));
-      if (attr.name[0] == ':') {
-        const name = attr.name.slice(1);
-        effect(() => node.setAttribute(name, node[name] = that[attr.value]));
+    if (node.nodeType == 1) for (const { name, value } of node.attributes) {
+      name == 'ref' && (that.$refs[value] = node);
+      name[0] == '@' && (node[name.replace('@', 'on')] = that[value].bind(that));
+      if (name[0] == ':') {
+        const bindName = name.slice(1);
+        effect(() => node.setAttribute(bindName, node[bindName] = that[value]));
       }
     }
     if (node.nodeType == 3) {
