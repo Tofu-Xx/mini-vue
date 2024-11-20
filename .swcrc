@@ -1,0 +1,49 @@
+{
+  "$schema": "https://swc.nodejs.cn/schema.json",
+  "minify": true,
+  "jsc": {
+    "minify": {
+      "mangle": {
+        "toplevel": false
+      },
+      "format": {
+        "comments": false
+      },
+      "compress": {
+        "defaults": false,
+        "join_vars": true,
+        "passes": 2,
+        "negate_iife": true,
+        "pure_funcs": [],
+        "reduce_vars": true,
+        "reduce_funcs": true,
+        // "sequences": true
+        "switches": true,
+        "typeofs": true,
+        "unsafe": true,
+        "unsafe_arrows": true,
+        "unsafe_comps": true,
+        "unsafe_Function": true,
+        "unsafe_math": true,
+        "unsafe_methods": true,
+        "unsafe_proto": true,
+        "unsafe_regexp": true,
+        "unsafe_undefined": true,
+        "unsafe_symbols": true,
+        "loops": true,
+        "booleans_as_integers": true,
+        "inline": 3,
+        // "collapse_vars": true,
+        "if_return": true,
+        "side_effects": false,
+        "evaluate": true,
+        "hoist_funs": true,
+        "hoist_props": true,
+        "hoist_vars": true,
+        "pure_getters": true,
+        "conditionals": true
+      }
+    },
+    "target": "esnext"
+  }
+}

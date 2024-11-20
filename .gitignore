@@ -1,7 +1,10 @@
-/**
-!/.gitignore
-!/*.md
-!/**/*.js
-!/examples/
-!/examples/**/*
-!LICENSE
+# /**
+# !/.gitignore
+# !/*.md
+# !/**/*.js
+# !/examples/
+# !/examples/**/*
+# !LICENSE
+
+node_modules/
+tmp/
