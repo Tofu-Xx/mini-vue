@@ -2,7 +2,7 @@
   仅供娱乐
 </p>
 
-<h1 align="center">mini-vue</h1>
+<h1 align="center">vueey</h1>
 
 <p align="center">
   <a href="./README.md">English</a> | <b>简体中文</b>
@@ -15,4 +15,4 @@
 - [ipt-msg](./examples/ipt-msg.html)
 
 ### ⌨️ 源码
-- [mini-vue.js](./mini-vue.js)
+- [vue.js](./vue.js)

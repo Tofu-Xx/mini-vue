@@ -2,7 +2,7 @@
   For entertainment only
 </p>
 
-<h1 align="center">mini-vue</h1>
+<h1 align="center">vueey</h1>
 
 <p align="center">
   <b>English</b> | <a href="./README.zh-CN.md">简体中文</a>
@@ -15,4 +15,4 @@ Minimal Vue implementation
 - [ipt-msg](./examples/ipt-msg.html)
 
 ### ⌨️ source code
-- [mini-vue.js](./mini-vue.js)
+- [vue.js](./vue.js)
