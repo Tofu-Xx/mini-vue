@@ -1,13 +1,17 @@
 {
   "$schema": "https://swc.nodejs.cn/schema.json",
-  "minify": false,
+  "minify": true,
   "jsc": {
     "minify": {
       "mangle": {
-        "toplevel": true
+        "toplevel": false
       },
       "format": {
         "comments": false
+      },
+      "compress": {
+        "defaults": false,
+        "join_vars": true
       }
     },
     "target": "esnext"
