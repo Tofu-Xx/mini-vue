@@ -1,21 +1,17 @@
 <head>
   <title>vueey | Counter</title>
   <link rel="stylesheet" href="https://unpkg.com/@tofukit/resetcss">
-  <!-- vueey's writing and effects are the same as the official ones. Unlock the comments to see the official effects -->
+  <!-- vueey's writing and effects are the same as the official ones. uncomment to see the official effects -->
   <!-- vueey写法和效果于官方一致，解开注释，查看官方效果 -->
   <!-- <script src="https://unpkg.com/vue@2"></script> -->
   <script src="https://unpkg.com/vueey@latest"></script>
-  <style>
-    button {
-      display: block;
-      margin: 20px auto;
-    }
-  </style>
 </head>
 
 <body>
   <div id="app">
-    <button @click="count++">{{ count }}</button>
+    <button @click="count--">dec</button>
+    <input ref="input" :value="count" @input="count = $event.target.value">
+    <button @click="count++">inc</button>
     <div ref="container"></div>
   </div>
 </body>
@@ -37,6 +33,9 @@
         this.$refs.container.innerHTML += `<p>${oldVal} --> ${val}</p>`;
         if (val > 3) this.reached();
       }
+    },
+    mounted() {
+      this.$refs.input.focus();
     }
   });
 </script>

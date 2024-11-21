@@ -1,7 +1,7 @@
 <head>
   <title>vueey | demon</title>
   <link rel="stylesheet" href="https://unpkg.com/@tofukit/resetcss">
-  <!-- vueey's writing and effects are the same as the official ones. Unlock the comments to see the official effects -->
+  <!-- vueey's writing and effects are the same as the official ones. uncomment to see the official effects -->
   <!-- vueey写法和效果于官方一致，解开注释，查看官方效果 -->
   <!-- <script src="https://unpkg.com/vue@2"></script> -->
   <script src="https://unpkg.com/vueey@latest"></script>
@@ -12,7 +12,11 @@
     <!-- {{ }} -->
     <h1>hi {{ getMsg() }}</h1>
     <p>{{ count }} * {{ count }} = {{ count * count }}</p>
-    <span>{{ fns.add.name + 's:' }}</span>
+    <span>
+      {{ 
+        fns.add.name + 's:'
+      }}
+    </span>
     <!-- @event -->
     <button @click="inc">inc</button>
     <button @click="inc()">inc()</button>
@@ -23,7 +27,9 @@
     <br><br>
     <input :value="msg" @input="ipt">
     <input :value="getMsg()" @change="log($event.target.value)">
-    <input :value="'Vue' + `ey`" @keyup="$refs.showKey.textContent = $event.key">
+    <input :value="
+      'Vue' + `ey`
+    " @keyup="$refs.showKey.textContent = $event.key">
     <code :ref="showKeyRefStr"></code>
   </div>
 </body>

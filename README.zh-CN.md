@@ -10,9 +10,7 @@
 
 最小化的 Vue 实现 **(< 1KB zipped)**
 
-### 🎉 达成目标
-
-##### 选项
+### 🎉 完成的功能
 
 ```ts
 interface Options {
@@ -24,8 +22,6 @@ interface Options {
 }
 ```
 
-##### 其他
-
  `{{ }}`
  `:attr=""`
  `@event=""`
@@ -33,10 +29,9 @@ interface Options {
  `this.$refs`
  `this.$el`
 
-### 🎯 用例
+### 🎯 使用的示例
 - [demon](./examples/demon.html)
 - [counter](./examples/counter.html)
-- [ipt-msg](./examples/ipt-msg.html)
 
-### ⌨️ 源码
+### ⌨️ 实现的代码
 - [vue.js](./vue.js)

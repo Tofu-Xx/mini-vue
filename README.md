@@ -12,8 +12,6 @@ Minimal Vue implementation **(< 1KB zipped)**
 
 ### 🎉 achieved
 
-##### Options
-
 ```ts
 interface Options {
   el?: string | Element
@@ -23,8 +21,6 @@ interface Options {
   mounted?: Function
 }
 ```
-
-##### Others
 
  `{{ }}`
  `:attr=""`
@@ -36,7 +32,6 @@ interface Options {
 ### 🎯 use case
 - [demon](./examples/demon.html)
 - [counter](./examples/counter.html)
-- [ipt-msg](./examples/ipt-msg.html)
 
 ### ⌨️ source code
 - [vue.js](./vue.js)
