@@ -1,5 +1,5 @@
 <p align="right">
-  仅供娱乐, <a href="./LearnMore.zh-CN.md">了解更多</a>
+  <a href="./LearnMore.zh-CN.md">了解更多</a>
 </p>
 
 <h1 align="center">vueey</h1>
@@ -8,7 +8,8 @@
   <a href="./README.md">English</a> | <b>简体中文</b>
 </p>
 
-最小化的 Vue 实现 **(< 1KB zipped)**
+本项目将还原出尽可能多的Vue核心功能，   
+并始终保持体积在 **1024** 字节以内。   
 
 ### 🎉 完成的功能
 

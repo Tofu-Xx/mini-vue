@@ -1,5 +1,5 @@
 <p align="right">
-  For entertainment only, <a href="LearnMore.md">learn more</a>
+  <a href="LearnMore.md">learn more</a>
 </p>
 
 <h1 align="center">vueey</h1>
@@ -8,7 +8,8 @@
   <b>English</b> | <a href="./README.zh-CN.md">简体中文</a>
 </p>
 
-Minimal Vue implementation **(< 1KB zipped)**
+This project will reproduce as many Vue core features as possible,   
+while keeping the size within 1024 bytes.   
 
 ### 🎉 achieved
 
