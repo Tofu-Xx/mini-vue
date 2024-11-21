@@ -26,13 +26,12 @@ interface Options {
 
 ##### 其他
 
-- {{ }}
-- :attr=""
-- @event=""
-- ref=""
-- this.\$refs
-- this.\$el
-
+ `{{ }}`
+ `:attr=""`
+ `@event=""`
+ `ref=""`
+ `this.\$refs`
+ `this.\$el`
 
 ### 🎯 用例
 - [demon](./examples/demon.html)
