@@ -6,9 +6,6 @@
       "mangle": {
         "toplevel": false
       },
-      "format": {
-        "comments": false
-      },
       "compress": {
         "defaults": false,
         "join_vars": true
