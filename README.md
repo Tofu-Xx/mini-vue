@@ -30,8 +30,8 @@ interface Options {
  `:attr=""`
  `@event=""`
  `ref=""`
- `this.\$refs`
- `this.\$el`
+ `this.$refs`
+ `this.$el`
 
 ### 🎯 use case
 - [demon](./examples/demon.html)
