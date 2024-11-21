@@ -7,20 +7,20 @@ function Vue(opt) {
     set: (...args) => [Reflect.set(...args), _deps[args[1]]?.forEach(f => f?.())][0],
   }), opt.methods, { $el, $refs: {} });
   const thatKeyRex = new RegExp(Object.keys(This).join('\\b|').replaceAll('$', '\\$'), 'g');
-  const toExpression = (raw) => new Function('$event', 'return ' + raw.replace(thatKeyRex, k => 'this.' + k));
+  const parseExpression = (raw) => new Function('$event', 'return ' + raw.replace(thatKeyRex, k => 'this.' + k));
   const walk = (walker, effect) => {
     const node = walker.currentNode;
-    const { nodeType, data: tem } = node;
+    const { nodeType, data } = node;
     if (nodeType == 1) for (const { name, value: raw } of node.attributes) {
       const bindName = name.slice(1);
       if (name[0] == '@')
-        node['on' + bindName] = (/[^\s\w$]/.test(raw) ? toExpression(raw) : This[raw.trim()])?.bind(This);
+        node['on' + bindName] = (/[^\s\w$]/.test(raw) ? parseExpression(raw) : This[raw.trim()])?.bind(This);
       if (name[0] == ':')
-        effect(() => node.setAttribute(bindName, node[bindName] = toExpression(raw).call(This)));
+        effect(() => node.setAttribute(bindName, node[bindName] = parseExpression(raw).call(This)));
       name == 'ref' && (This.$refs[raw] = node);
     }
     if (nodeType == 3)
-      effect(() => node.data = tem.replace(/\{\{(.*?)\}\}/g, (_, raw) => toExpression(raw).call(This)));
+      effect(() => node.data = data.replace(/\{\{(.*?)\}\}/g, (_, raw) => parseExpression(raw).call(This)));
     walker.nextNode() ? walk(walker, effect) : opt.mounted?.call(This);
   };
   walk(document.createTreeWalker($el, 7), fn => (_active = fn, fn()));
