@@ -8,7 +8,7 @@
   <b>English</b> | <a href="./README.zh-CN.md">简体中文</a>
 </p>
 
-Minimal Vue implementation (996 Bytes)
+Minimal Vue implementation **(< 1KB zipped)**
 
 ### 🎉 achieved
 
