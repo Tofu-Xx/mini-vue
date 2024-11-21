@@ -15,10 +15,9 @@
     <button @click="count++">add</button>
     <button @click="fns.add">{{ fns.add.name }} ❌</button>
     <!--  -->
-    <p>
-      {{ msg }}
-      <span ref="showKey"></span>
-    </p>
+    <br><br>
+    <span>{{ msg }}</span> <code :ref="showKeyRefStr"></code>
+    <br>
     <input :value="msg" @input="ipt">
     <input :value="getMsg()" @change="log($event)">
     <input :value="'vue'+`ey`" @keyup="$refs.showKey.textContent = $event.key">
@@ -35,7 +34,8 @@
         add() {
           this.count++;
         }
-      }
+      },
+      showKeyRefStr: 'showKey'
     },
     methods: {
       inc() {

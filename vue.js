@@ -1,4 +1,4 @@
-function Vue(opt) {
+function Vue(opt = {}) {
   let _active;
   const _deps = {};
   const $el = opt.el?.at ? document.querySelector(opt.el) : opt.el ?? document;
