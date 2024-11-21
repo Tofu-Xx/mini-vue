@@ -9,18 +9,23 @@
 
 <body>
   <div id="app">
+    <!-- {{ }} -->
+    <p>hi {{ getMsg() }}</p>
+    <p>{{ fns.add.name + ' count' }}</p>
     <p>{{ count }} * {{ count }} = {{ count * count }}</p>
+    <!-- @event -->
     <button @click="inc">inc</button>
     <button @click="inc()">inc()</button>
     <button @click="count++">add</button>
-    <button @click="fns.add">{{ fns.add.name }} ❌</button>
-    <!--  -->
+    <button @click="count++;log('hi')">add and say hi</button>
+    <button @click="fns.add">❌</button>
+    <!-- :attr -->
     <br><br>
     <span>{{ msg }}</span> <code :ref="showKeyRefStr"></code>
     <br>
     <input :value="msg" @input="ipt">
-    <input :value="getMsg()" @change="log($event)">
-    <input :value="'vue'+`ey`" @keyup="$refs.showKey.textContent = $event.key">
+    <input :value="getMsg()" @change="log($event.target.value)">
+    <input :value="'Vue' + `ey`" @keyup="$refs.showKey.textContent = $event.key">
   </div>
 </body>
 
@@ -44,8 +49,8 @@
       ipt(evt) {
         this.msg = evt.target.value;
       },
-      log(evt) {
-        console.log(evt.target.value);
+      log(str) {
+        console.log(str);
       },
       getMsg() {
         return this.msg;
