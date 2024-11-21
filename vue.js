@@ -8,7 +8,8 @@ function Vue(opt) {
   }), opt.methods, { $el, $refs: {} });
   const thatKeyRex = new RegExp(Object.keys(This).join('\\b|').replaceAll('$', '\\$'), 'g');
   const parseExpression = (raw) => new Function('$event', 'return ' + raw.replace(thatKeyRex, k => 'this.' + k));
-  const walk = (walker, effect) => {
+  const effect = (fn) => (_active = fn, fn());
+  const walk = (walker) => {
     const node = walker.currentNode;
     const { nodeType, data } = node;
     if (nodeType == 1) for (const { name, value: raw } of node.attributes) {
@@ -17,13 +18,15 @@ function Vue(opt) {
         node['on' + bindName] = (/[^\s\w$]/.test(raw) ? parseExpression(raw) : This[raw.trim()])?.bind(This);
       if (name[0] == ':')
         effect(() => node.setAttribute(bindName, node[bindName] = parseExpression(raw).call(This)));
-      name == 'ref' && (This.$refs[raw] = node);
+      if (name == 'ref')
+        This.$refs[raw] = node;
     }
     if (nodeType == 3)
       effect(() => node.data = data.replace(/\{\{(.*?)\}\}/g, (_, raw) => parseExpression(raw).call(This)));
-    walker.nextNode() ? walk(walker, effect) : opt.mounted?.call(This);
+    if (walker.nextNode()) walk(walker);
+    else opt.mounted?.call(This);
   };
-  walk(document.createTreeWalker($el, 7), fn => (_active = fn, fn()));
+  walk(document.createTreeWalker($el, 7));
   for (const [key, fn] of Object.entries(opt.watch ?? {})) {
     let oldVal = This[key];
     _deps[key].add(() => Promise.resolve().then(() => {

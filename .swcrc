@@ -1,14 +1,20 @@
+/* https://swc.rs/docs/configuration/minification */
 {
   "$schema": "https://swc.nodejs.cn/schema.json",
   "minify": true,
+  // "minify": false,
   "jsc": {
     "minify": {
       "mangle": {
         "toplevel": false
       },
       "compress": {
-        "defaults": false,
-        "join_vars": true
+        // "reduce_funcs": true,
+        "collapse_vars": false, /* distinguish const and let */
+        "unused": false/* global.js */
+      },
+      "format": {
+        "comments": false
       }
     },
     "target": "esnext"
