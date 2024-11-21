@@ -6,8 +6,8 @@ function Vue(opt = {}) {
     get: (...args) => [Reflect.get(...args), (_deps[args[1]] ??= new Set()).add(_active)][0],
     set: (...args) => [Reflect.set(...args), _deps[args[1]]?.forEach(f => f?.())][0],
   }), opt.methods, { $el, $refs: {} });
-  const thatKeyRex = RegExp(Object.keys(This).join('\\b|').replaceAll('$', '\\$'), 'g');
-  const parseExpression = (raw, preCode = 'return ') => Function('$event', preCode + raw.trim().replace(thatKeyRex, k => 'this.' + k));
+  const thisKeyRex = RegExp(Object.keys(This).join('\\b|').replaceAll('$', '\\$'), 'g');
+  const parseExpression = (raw, preCode = 'return ') => Function('$event', preCode + raw.trim().replace(thisKeyRex, k => 'this.' + k));
   const effect = (fn) => (_active = fn, fn());
   const walk = (walker) => {
     const node = walker.currentNode;
