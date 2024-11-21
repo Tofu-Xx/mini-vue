@@ -1,7 +1,7 @@
-<b id="简体中文">简体中文</b> | <a href="#english">English</a>
+<b id="简体中文">简体中文</b> | <a href="#English">English</a>
 
-这是一个代码挑战，目的是将压缩后的代码体积保持在1KB以内的同时，还原出Vue的核心功能。
+这是将压缩后的代码体积保持在1KB以内,同时还原出尽可能多的Vue核心功能的挑战。
 
-<b id="english">简体中文</b> | <a href="#简体中文">简体中文</a>
-
-This is a code challenge to keep the compressed code size under 1KB while restoring the core functionality of Vue.
+<b id="English">English</b> | <a href="#简体中文">简体中文</a>
+ 
+This was the challenge of keeping the compressed code under 1KB while restoring as much of Vue's core functionality as possible.
