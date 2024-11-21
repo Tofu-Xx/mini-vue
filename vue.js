@@ -6,13 +6,13 @@ function Vue(opt) {
     get: (...args) => [Reflect.get(...args), (_deps[args[1]] ??= new Set()).add(_active)][0],
     set: (...args) => [Reflect.set(...args), _deps[args[1]]?.forEach(f => f?.())][0],
   }), opt.methods, { $el, $refs: {} });
-  const thatKeyRex = new RegExp(Object.keys(This).join('\\b|').replaceAll('$', '\\$'), 'g');
-  const parseExpression = (raw) => new Function('$event', 'return ' + raw.replace(thatKeyRex, k => 'this.' + k));
+  const thatKeyRex = RegExp(Object.keys(This).join('\\b|').replaceAll('$', '\\$'), 'g');
+  const parseExpression = (raw) => Function('$event', 'return ' + raw.replace(thatKeyRex, k => 'this.' + k));
   const effect = (fn) => (_active = fn, fn());
   const walk = (walker) => {
     const node = walker.currentNode;
     const { nodeType, data } = node;
-    if (nodeType == 1) for (const { name, value: raw } of node.attributes) {
+    if (nodeType == Node.ELEMENT_NODE) for (const { name, value: raw } of node.attributes) {
       const bindName = name.slice(1);
       if (name[0] == '@')
         node['on' + bindName] = (/[^\s\w$]/.test(raw) ? parseExpression(raw) : This[raw.trim()])?.bind(This);
@@ -21,12 +21,12 @@ function Vue(opt) {
       if (name == 'ref')
         This.$refs[raw] = node;
     }
-    if (nodeType == 3)
+    if (nodeType == Node.TEXT_NODE)
       effect(() => node.data = data.replace(/\{\{(.*?)\}\}/g, (_, raw) => parseExpression(raw).call(This)));
     if (walker.nextNode()) walk(walker);
     else opt.mounted?.call(This);
   };
-  walk(document.createTreeWalker($el, 7));
+  walk(document.createTreeWalker($el, NodeFilter.SHOW_ALL));
   for (const [key, fn] of Object.entries(opt.watch ?? {})) {
     let oldVal = This[key];
     _deps[key].add(() => Promise.resolve().then(() => {
