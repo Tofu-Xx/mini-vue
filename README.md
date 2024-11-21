@@ -1,5 +1,5 @@
 <p align="right">
-  For entertainment only
+  For entertainment only, <a href="LearnMore.md">learn more</a>
 </p>
 
 <h1 align="center">vueey</h1>

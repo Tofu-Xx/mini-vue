@@ -1,5 +1,5 @@
 <p align="right">
-  仅供娱乐
+  仅供娱乐, <a href="./LearnMore.md">了解更多</a>
 </p>
 
 <h1 align="center">vueey</h1>
