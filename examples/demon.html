@@ -10,9 +10,9 @@
 <body>
   <div id="app">
     <!-- {{ }} -->
-    <p>hi {{ getMsg() }}</p>
-    <p>{{ fns.add.name + ' count' }}</p>
+    <h1>hi {{ getMsg() }}</h1>
     <p>{{ count }} * {{ count }} = {{ count * count }}</p>
+    <span>{{ fns.add.name + 's:' }}</span>
     <!-- @event -->
     <button @click="inc">inc</button>
     <button @click="inc()">inc()</button>
@@ -21,11 +21,10 @@
     <button @click="fns.add">❌</button>
     <!-- :attr -->
     <br><br>
-    <span>{{ msg }}</span> <code :ref="showKeyRefStr"></code>
-    <br>
     <input :value="msg" @input="ipt">
     <input :value="getMsg()" @change="log($event.target.value)">
     <input :value="'Vue' + `ey`" @keyup="$refs.showKey.textContent = $event.key">
+    <code :ref="showKeyRefStr"></code>
   </div>
 </body>
 

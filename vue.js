@@ -22,7 +22,7 @@ function Vue(opt = {}) {
         This.$refs[raw] = node;
     }
     if (nodeType == Node.TEXT_NODE)
-      effect(() => node.data = data.replace(/\{\{(.*?)\}\}/g, (_, raw) => parseExpression(raw).call(This)));
+      effect(() => node.data = data.replace(/\{\{([^]*?)\}\}/g, (_, raw) => parseExpression(raw.trim()).call(This)));
     if (walker.nextNode()) walk(walker);
     else opt.mounted?.call(This);
   };
