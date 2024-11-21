@@ -7,6 +7,7 @@
   <script src="https://unpkg.com/vueey@latest"></script>
 </head>
 
+
 <body>
   <div id="app">
     <button @click="count--">dec</button>
@@ -25,11 +26,18 @@
     methods: {
       reached() {
         alert('You have reached the maximum count!');
+        this.reset();
+      },
+      reset() {
         this.count = 0;
       }
     },
     watch: {
       count(val, oldVal) {
+        if (Number.isNaN(val)) {
+          this.reset();
+          return;
+        }
         this.$refs.container.innerHTML += `<p>${oldVal} --> ${val}</p>`;
         if (val > 3) this.reached();
       }
