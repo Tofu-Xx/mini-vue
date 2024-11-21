@@ -15,12 +15,12 @@ Minimal Vue implementation **(< 1KB zipped)**
 ##### Options
 
 ```ts
-interface Options  {
-  el?: string|Element,
-  data?: Object|() => Object,
-  methods?: Record<string, Function>,
-  watch?: Record<string, (val: any, oldVal: any) => void>,
-  mounted?: Function,
+interface Options {
+  el?: string | Element
+  data?: object | Function
+  methods?: Record<string, Function>
+  watch?: Record<string, (val: any, oldVal: any) => void>
+  mounted?: Function
 }
 ```
 
