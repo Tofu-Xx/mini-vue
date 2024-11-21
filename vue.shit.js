@@ -15,21 +15,24 @@ function Vue(opt) {
   const parseExpression = (raw) => Function('$event', 'return ' + raw.replace(thatKeyRex, (k) => 'this.' + k))
   const effect = (fn) => (_active = fn, fn())
   const walk = (walker) => {
+    // console.log(walker)
     const node = walker.currentNode
-    const {  data } = node
     if (node.nodeType == Node.ELEMENT_NODE) for (const { name, value: raw } of node.attributes) {
       vueey[name + 'bindName'] = name.slice(1)
       '@' == name[0] && (node['on' + vueey[name + 'bindName']] = (/[^\s\w$]/.test(raw) ? parseExpression(raw) : This[raw.trim()])?.bind(This)), ':' == name[0] && effect(() => node.setAttribute(vueey[name + 'bindName'], node[vueey[name + 'bindName']] = parseExpression(raw).call(This))), 'ref' == name && (This.$refs[raw] = node)
     }
-    node.nodeType == Node.TEXT_NODE &&(console.log(node), effect(() => node.data = data.replace(/\{\{(.*?)\}\}/g, (_, raw) => parseExpression(raw).call(This))))
+    node.nodeType == Node.TEXT_NODE && (
+      node.__v_tem__ = node.data,
+      effect(() => node.data = node.__v_tem__.replace(/\{\{(.*?)\}\}/g, (_, raw) => parseExpression(raw).call(This)))
+    ),
       walker.nextNode() ? walk(walker) : opt.mounted?.call(This)
   }
   walk(document.createTreeWalker($el, NodeFilter.SHOW_ALL))
   Object.entries(opt.watch ?? {}).forEach(([key, fn]) => {
-    vueey['watch' + key + 'oldVal'] = This[key]
+    vueey['watch' + key + 'oldVal'] = This[key],
     _deps[key].add(() => Promise.resolve().then(() => {
-      const val = This[key]
-      fn.call(This, val, vueey['watch' + key + 'oldVal']), vueey['watch' + key + 'oldVal'] = val
+      vueey['watch' + key + 'val'] = This[key],
+        fn.call(This, vueey['watch' + key + 'val'], vueey['watch' + key + 'oldVal']), vueey['watch' + key + 'oldVal'] = vueey['watch' + key + 'val']
     }))
   })
 }
