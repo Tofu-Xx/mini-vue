@@ -7,7 +7,7 @@ function Vue(opt = {}) {
     set: (...args) => [Reflect.set(...args), _deps[args[1]]?.forEach(f => f?.())][0],
   }), opt.methods, { $el, $refs: {} });
   const thatKeyRex = RegExp(Object.keys(This).join('\\b|').replaceAll('$', '\\$'), 'g');
-  const parseExpression = (raw, preCode = 'return ') => Function('$event', preCode + raw.replace(thatKeyRex, k => 'this.' + k));
+  const parseExpression = (raw, preCode = 'return ') => Function('$event', preCode + raw.trim().replace(thatKeyRex, k => 'this.' + k));
   const effect = (fn) => (_active = fn, fn());
   const walk = (walker) => {
     const node = walker.currentNode;
@@ -22,7 +22,7 @@ function Vue(opt = {}) {
         This.$refs[raw] = node;
     }
     if (nodeType == Node.TEXT_NODE)
-      effect(() => node.data = data.replace(/\{\{([^]*?)\}\}/g, (_, raw) => parseExpression(raw.trim()).call(This)));
+      effect(() => node.data = data.replace(/\{\{([^]*?)\}\}/g, (_, raw) => parseExpression(raw).call(This)));
     if (walker.nextNode()) walk(walker);
     else opt.mounted?.call(This);
   };
