@@ -30,7 +30,7 @@ function Vue(opt = {}) {
   };
   for (const [key, fn] of obj.entries(opt.watch ?? {})) {
     let oldVal = This[key];
-    _deps[key].add(() => Promise.resolve().then(() => {
+    _deps[key].add(() => queueMicrotask(() => {
       const val = This[key];
       if (val == oldVal) return;
       fn.call(This, val, oldVal);
