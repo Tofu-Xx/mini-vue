@@ -1,7 +1,6 @@
 /* 0.0.3 */
 function Vue(opt) {
   window.vueey = Object.create(null),
-  vueey._active,
   vueey._deps = Object.create(null),
   vueey.$el = opt.el?.at ? document.querySelector(opt.el) : opt.el ?? document,
   vueey.trace = (key) => (vueey._deps[key] ??= new Set()).add(vueey._active),
@@ -47,13 +46,12 @@ function Vue(opt) {
   ),
   vueey.walk = (node, walker) => (
     node.nodeType == Node.ELEMENT_NODE && vueey.forof(node.attributes, (attr) => (
-      vueey.bind = Object.create(null),
-      vueey.bind[attr.name] = attr.name.slice(1),
+      vueey._bindName = attr.name.slice(1),
       'ref' == attr.name && (
         vueey.This.$refs[attr.value] = node
       ),
       '@' == attr.name[0] && (
-        node['on' + vueey.bind[attr.name]] = (
+        node['on' + vueey._bindName] = (
           /[^\s\w$]/.test(attr.value)
             ? vueey.parse(attr.value, '')
             : vueey.This[attr.value.trim()]
@@ -62,16 +60,16 @@ function Vue(opt) {
       ':' == attr.name[0] && (
         vueey.effect(
           () => node.setAttribute(
-            vueey.bind[attr.name],
-            node[vueey.bind[attr.name]] = vueey.parse(attr.value).call(vueey.This)
+            vueey._bindName,
+            node[vueey._bindName] = vueey.parse(attr.value).call(vueey.This)
           )
         )
       )
     )),
     node.nodeType == Node.TEXT_NODE && (
-      node.__v_tem__ = node.data,
+      node.__raw_tem__ = node.data,
       vueey.effect(() => (
-        node.data = node.__v_tem__.replace(
+        node.data = node.__raw_tem__.replace(
           /\{\{(.*?)\}\}/g,
           (_, raw) => vueey.parse(raw).call(vueey.This)
         ))
