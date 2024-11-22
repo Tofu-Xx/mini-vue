@@ -25,7 +25,6 @@
 	"scripts": {
 		"release": "bumpp -no-push && nr build && pnpm publish",
 		"up": "taze major -I",
-		"push": "nr build && g.p",
 		"build": "swc vue.js -o vue.min.js"
 	},
 	"devDependencies": {
