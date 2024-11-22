@@ -1,22 +1,21 @@
 /* 0.0.2 */
 function Vue(opt) {
-  window.vueey = Object.create(null)
-  vueey["forof"] = (iterable, callback)=> {
+  window.vueey = Object.create(null);
+  vueey["forof"] = (iterable, callback) => {
     vueey['forof:iterable' + iterable] = iterable[Symbol.iterator]();
     vueey["forof:result" + iterable] = vueey['forof:iterable' + iterable].next();
     while (!vueey["forof:result" + iterable].done)
       (callback(vueey["forof:result" + iterable].value), vueey["forof:result" + iterable] = vueey['forof:iterable' + iterable].next());
-  }
+  };
   vueey["_active"];
   vueey["_deps"] = {};
   vueey["$el"] = opt.el?.at ? document.querySelector(opt.el) : opt.el ?? document;
-  vueey["This"] = Object.assign(new Proxy('object' == typeof opt.data ? opt.data : opt.data?.() ?? {}, {
-    get: (...args) => [Reflect.get(...args), (vueey["_deps"][args[1]] ??= new Set()).add(vueey["_active"])][0],
-    set: (...args) => [Reflect.set(...args), vueey["_deps"][args[1]]?.forEach((f) => f?.())][0]
-  }), opt.methods, {
-    $el: vueey["$el"],
-    $refs: {}
-  });
+  vueey["trace"] = (key) => (vueey["_deps"][key] ??= new Set()).add(vueey["_active"]);
+  vueey["tirgger"] = (key) => vueey["_deps"][key]?.forEach((f) => f?.());
+
+  vueey["This"] = Object.assign(new Proxy('object' == typeof opt.data ? opt.data : opt.data?.() ?? {},
+    Object.fromEntries([["get", (...args) => [Reflect.get(...args), vueey["trace"](args[1])][0]], ["set", (...args) => [Reflect.set(...args), vueey["tirgger"](args[1])][0]]])
+  ), opt.methods, Object.fromEntries([["$el", vueey["$el"],], ["$refs", {}]]));
   vueey["thisKeyRex"] = RegExp(Object.keys(vueey["This"]).join('\\b|').replaceAll('$', '\\$'), 'g');
   vueey["parseExpression"] = (raw) => Function('$event', 'return ' + raw.replace(vueey["thisKeyRex"], (k) => 'this.' + k));
   vueey["effect"] = (fn) => (vueey["_active"] = fn, fn());

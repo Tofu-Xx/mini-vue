@@ -10,27 +10,21 @@
 <body>
   <div id="app">
     <!-- {{ }} -->
-    <h1>hi {{ getMsg() }}</h1>
-    <p>{{ count }} * {{ count }} = {{ count * count }}</p>
-    <span>
-      {{ 
-        fns.add.name + 's:'
-      }}
-    </span>
+    <h1>hello {{ name }}</h1>
+    <p>{{ count }} * 2 = {{ count * 2 }}</p> 
     <!-- @event -->
     <button @click="inc">inc</button>
     <button @click="inc()">inc()</button>
     <button @click="count++">add</button>
     <button @click="count++;log('hi')">add and say hi</button>
-    <button @click="fns.add">❌</button>
-    <!-- :attr -->
+    <!-- :attr and @event -->
     <br><br>
-    <input :value="msg" @input="ipt">
-    <input :value="getMsg()" @change="log($event.target.value)">
-    <input :value="
-      'Vue' + `ey`
-    " @keyup="$refs.showKey.textContent = $event.key">
-    <code :ref="showKeyRefStr"></code>
+    <input :value="name" @input="ipt">
+    <input :placeholder="getPh()" @change="$refs.changeTo.textContent = 'change to: '+$event.target.value">
+    <input :value="'Vue' + 'ey'" @keyup="$refs.showKey.value = $event.key">
+    <!-- ref -->
+    <input :ref="showKeyRefStr" type="button">
+    <p ref="changeTo"></p>
   </div>
 </body>
 
@@ -38,13 +32,8 @@
   new Vue({
     el: '#app',
     data: {
-      msg: 'Vueey',
+      name: 'Vueey',
       count: 0,
-      fns: {
-        add() {
-          this.count++;
-        }
-      },
       showKeyRefStr: 'showKey'
     },
     methods: {
@@ -52,13 +41,13 @@
         this.count++;
       },
       ipt(evt) {
-        this.msg = evt.target.value;
+        this.name = evt.target.value;
       },
       log(str) {
         console.log(str);
       },
-      getMsg() {
-        return this.msg;
+      getPh() {
+        return 'change me';
       }
     }
   })
