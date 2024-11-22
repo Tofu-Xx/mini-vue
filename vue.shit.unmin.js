@@ -46,18 +46,18 @@ function Vue(opt) {
   ),
   vueey.walk = (node, walker) => (
     node.nodeType == Node.ELEMENT_NODE && vueey.forof(node.attributes, (attr) => (
-      vueey._bindName = attr.name.slice(1),
       'ref' == attr.name && (
         vueey.This.$refs[attr.value] = node
       ),
       '@' == attr.name[0] && (
-        node['on' + vueey._bindName] = (
+        node[attr.name.replace('@', 'on')] = (
           /[^\s\w$]/.test(attr.value)
             ? vueey.parse(attr.value, '')
             : vueey.This[attr.value.trim()]
         )?.bind(vueey.This)
       ),
       ':' == attr.name[0] && (
+        vueey._bindName = attr.name.slice(1),
         vueey.effect(
           () => node.setAttribute(
             vueey._bindName,
