@@ -36,6 +36,44 @@ function Vue(opt = {}) {
   }
   opt.created?.call(This);
   compiler($el);
-  _active = () => Promise.resolve().then(opt.updated?.bind(This));
+
+  let pending = false;
+
+ _active = () => {
+  if (pending) return;
+  pending = true;
+  requestAnimationFrame(() => {
+    pending = false;
+    opt.updated?.call(This);
+  });
+};
+
   opt.mounted?.call(This);
 };
+
+
+// let isUpdating = false
+// _active = () => {
+//   if (isUpdating) return;
+//   isUpdating = true;
+//   return Promise.resolve().then(() => {
+//     opt.updated?.call(This);
+//     isUpdating = false;
+//   });
+// };
+
+/* let timeoutId = null;
+
+_active = () => {
+ if (timeoutId) return;
+ timeoutId = setTimeout(() => {
+   timeoutId = null;
+   opt.updated?.call(This);
+ }, 0);
+}; */
+
+/* _active = () => {
+    return Promise.resolve().then(() => {
+      opt.updated?.call(This);
+    });
+  }; */
