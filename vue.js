@@ -7,7 +7,7 @@ function Vue(opt = {}) {
     get: (...args) => [Reflect.get(...args), (_deps[args[1]] ??= new Set()).add(_active)][0],
     set: (...args) => [Reflect.set(...args), _deps[args[1]]?.forEach(f => f?.())][0],
   }), opt.methods, { $el, $refs });
-  const thisKeyRex = RegExp(Object.keys(This).join('\\b|').replaceAll('$', '\\$'), 'g');
+  const thisKeyRex = RegExp(Object.keys(This).map(k=>`\\b${k}\\b`).join('|').replaceAll('$', '\\$'), 'g');
   const infuse = (raw, preCode = 'return ') => Function('$event', preCode + raw.trim().replace(thisKeyRex, k => 'this.' + k)).bind(This);
   const effect = (fn) => (_active = fn, fn());
   const compiler = (node, walker = document.createTreeWalker(node, NodeFilter.SHOW_ALL)) => {
