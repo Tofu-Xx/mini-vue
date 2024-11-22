@@ -18,5 +18,5 @@ See [vue.devil.js](./vue.devil.js)
 I know this seems a little unfriendly,
 So I prepared the expanded version [vue.undevil.js](./vue.undevil.js)
 
-The difference is that this version has a global vueey object,   
+The difference is that this version of the Vue instance object,   
 Specially designed. Kind of interesting
