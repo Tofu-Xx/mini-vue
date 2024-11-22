@@ -11,9 +11,10 @@ and the code harder to read and maintain.
 Performance might also be affected.   
    
 However, I have also kept a version that is simply for fewer lines of code: [vue.shit.js](./vue.shit.js)   
+**Rules of the game:**
+- `{` and `;` must be wrapped after
+- `}` must be wrapped before
+- unless they are in a regular expression.   
 *<small>For appreciation only, it won't be published on npm.</small>*   
-
-Characters that require a newline: `{;}` and `,` in object literals   
-Object destruct, empty object, except for semicolon in `for()`   
    
 For now, the goal is to keep the bundled code size within 1024 bytes.   
