@@ -34,17 +34,21 @@ function Vue(opt) {
       )
     ).bind(energy),
     vueey.forof = (iterable, callback) => (
-      vueey.forof.iterable = Object.create(null),
-      vueey.forof.iterable[iterable] = iterable[Symbol.iterator](),
-      vueey.forof.next = () => (
-        vueey.forof.result = Object.create(null),
-        vueey.forof.result[iterable] = vueey.forof.iterable[iterable].next(),
-        vueey.forof.result[iterable].done || (
-          callback(vueey.forof.result[iterable].value),
-          vueey.forof.next()
+      // vueey.forof._iterable = Object.create(null),
+      vueey.forof._iterable = iterable[Symbol.iterator](),
+      vueey.forof._next = () => (
+        // vueey.forof._result = Object.create(null),
+        vueey.forof._result = vueey.forof._iterable.next(),
+        vueey.forof._result.done ? (
+          Reflect.deleteProperty(vueey.forof, '_iterable'),
+          Reflect.deleteProperty(vueey.forof, '_next'),
+          Reflect.deleteProperty(vueey.forof, '_result')
+        ) : (
+          callback(vueey.forof._result.value),
+          vueey.forof._next()
         )
       ),
-      vueey.forof.next()
+      vueey.forof._next()
     ),
     vueey.compiler = (node = vueey.el, walker = document.createTreeWalker(node, NodeFilter.SHOW_ALL)) => (
       node.nodeType == Node.ELEMENT_NODE && vueey.forof(node.attributes, (attr) => (
