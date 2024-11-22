@@ -52,23 +52,24 @@ function Vue(opt) {
     ),
     vueey.compiler = (node = vueey.el, walker = document.createTreeWalker(node, NodeFilter.SHOW_ALL)) => (
       node.nodeType == Node.ELEMENT_NODE && vueey.forof(node.attributes, (attr) => (
+        vueey.compiler._bind = attr.name.slice(1),
         'ref' == attr.name && (
           vueey.This.$refs[attr.value] = node
         ),
         '@' == attr.name[0] && (
-          node[attr.name.replace('@', 'on')] = /[^\s\w$]/.test(attr.value)
+          node['on' + vueey.compiler._bind] = /[^\s\w$]/.test(attr.value)
             ? vueey.infuse(vueey.This, attr.value, '')
             : vueey.This[attr.value.trim()].bind(vueey.This)
         ),
         ':' == attr.name[0] && (
-          vueey.compiler._binds.push(attr.name.slice(1)),
           vueey.reactivity.effect(
             () => node.setAttribute(
-              vueey.compiler._binds.at(-1),
-              node[vueey.compiler._binds.at(-1)] = vueey.infuse(vueey.This, attr.value)()
+              vueey.compiler._bind,
+              node[vueey.compiler._bind] = vueey.infuse(vueey.This, attr.value)()
             )
           )
-        )
+        ),
+        Reflect.deleteProperty(vueey.compiler, '_bind')
       )),
       node.nodeType == Node.TEXT_NODE && (
         node.__raw_tem__ = node.data,
@@ -83,8 +84,7 @@ function Vue(opt) {
         ? vueey.compiler(walker.currentNode, walker)
         : opt?.mounted?.call(vueey.This)
     ),
-    vueey.compiler._binds = [],
-    vueey.opt && vueey.compiler(vueey.el),
+    vueey.opt && vueey.compiler(),
     vueey.forof(
       Object.entries(opt?.watch ?? Object.create(null)),
       ([key, fn]) => (
