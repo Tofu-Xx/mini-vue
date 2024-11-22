@@ -2,10 +2,11 @@ function Vue(opt = {}) {
   let _active;
   const _deps = {};
   const $el = opt.el?.at ? document.querySelector(opt.el) : opt.el ?? document;
+  const $refs = {};
   const This = Object.assign(new Proxy(typeof opt.data == 'object' ? opt.data : opt.data?.() ?? {}, {
     get: (...args) => [Reflect.get(...args), (_deps[args[1]] ??= new Set()).add(_active)][0],
     set: (...args) => [Reflect.set(...args), _deps[args[1]]?.forEach(f => f?.())][0],
-  }), opt.methods, { $el, $refs: {} });
+  }), opt.methods, { $el, $refs });
   const thisKeyRex = RegExp(Object.keys(This).join('\\b|').replaceAll('$', '\\$'), 'g');
   const infuse = ( raw, preCode = 'return ') => Function('$event', preCode + raw.trim().replace(thisKeyRex, k => 'this.' + k)).bind(This);
   const effect = (fn) => (_active = fn, fn());
