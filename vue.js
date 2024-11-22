@@ -46,5 +46,5 @@ function Vue(opt = {}) {
       opt.updated?.call(This);
     });
   };
-  opt.mounted?.call(This)
+  opt.mounted?.call(This);
 };
