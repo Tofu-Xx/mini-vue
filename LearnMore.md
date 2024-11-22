@@ -1,13 +1,22 @@
-The initial motivation was to replicate Vue's core features with minimal code,   
-so I set a goal of keeping it under 50 lines.   
-But I realized...   
+The original intention was to recreate Vue's core functionality with very little code,   
+So I set a target of 50 lines or less,   
+But the rules of line feed are not easy to define,
+And I found ...   
    
-can replace all 'if-else' statements with ternary operators,   
-all `for` loops with `forEach` functions,   
-and storing all variable declarations as properties of a top-level object...   
+You can replace all `if-else` statements with ternary operators,   
+All `for` loops are replaced by methods,   
+All variable declarations are placed in the properties of a top-level object...   
+
+This is where things get weird,   
+The code will become difficult to read and maintain.   
+Performance is also affected.   
    
-Would make things boring,   
-and the code harder to read and maintain.   
-Performance might also be affected.    
-   
-For now, the goal is to keep the bundled code size within 1024 bytes.   
+I think it makes more sense to control code size out of pragmatism.
+
+But I did the stupid thing anyway,   
+See [vue.devil.js](./vue.devil.js)
+I know this seems a little unfriendly,
+So I prepared the expanded version [vue.undevil.js](./vue.undevil.js)
+
+The difference is that this version has a global vueey object,   
+Specially designed. Kind of interesting
