@@ -2,7 +2,7 @@
 function Vue(opt) {
   window.vueey = Object.create(null),
   vueey._deps = Object.create(null),
-  vueey.$el = opt.el?.at ? document.querySelector(opt.el) : opt.el ?? document,
+  vueey.el = opt.el?.at ? document.querySelector(opt.el) : opt.el ?? document,
   vueey.trace = (key) => (vueey._deps[key] ??= new Set()).add(vueey._active),
   vueey.tirgger = (key) => vueey._deps[key]?.forEach((f) => f?.()),
   vueey.effect = (fn) => (vueey._active = fn, fn()),
@@ -16,21 +16,20 @@ function Vue(opt) {
     ),
     opt.methods,
     Object.fromEntries([
-      ["$el", vueey.$el,],
+      ["$el", vueey.el,],
       ["$refs", Object.create(null)]
     ])
-  ),
-  vueey.thisKeyRex = RegExp(
-    Object.keys(vueey.This).join('\\b|').replaceAll('$', '\\$'),
-    'g'
-  ),
-  vueey.parse = (raw, preCode = 'return ') => Function(
+  ), 
+  vueey.infuse = (energy , raw, preCode = 'return ') => Function(
     '$event',
     preCode + raw.trim().replace(
-      vueey.thisKeyRex,
+      RegExp(
+        Object.keys(energy).join('\\b|').replaceAll('$', '\\$'),
+        'g'
+      ),
       (k) => 'this.' + k
     )
-  ),
+  ).bind(energy),
   vueey.forof = (iterable, callback) => (
     vueey.forof.iterable = Object.create(null),
     vueey.forof.iterable[iterable] = iterable[Symbol.iterator](),
@@ -51,18 +50,17 @@ function Vue(opt) {
         vueey.This.$refs[attr.value] = node
       ),
       '@' == attr.name[0] && (
-        node[attr.name.replace('@', 'on')] = (
+        node[attr.name.replace('@', 'on')] = 
           /[^\s\w$]/.test(attr.value)
-            ? vueey.parse(attr.value, '')
-            : vueey.This[attr.value.trim()]
-        )?.bind(vueey.This)
+            ? vueey.infuse(vueey.This, attr.value, '')
+            : vueey.This[attr.value.trim()].bind(vueey.This)
       ),
       ':' == attr.name[0] && (
-        vueey._binds.push(attr.name.slice(1)),
+        vueey._binds.push(attr.name.slice(1)),  
         vueey.effect(
           () => node.setAttribute(
             vueey._binds.at(-1),
-            node[vueey._binds.at(-1)] = vueey.parse(attr.value).call(vueey.This)
+            node[vueey._binds.at(-1)] = vueey.infuse(vueey.This, attr.value)()
           )
         )
       )
@@ -72,7 +70,7 @@ function Vue(opt) {
       vueey.effect(() => (
         node.data = node.__raw_tem__.replace(
           /\{\{(.*?)\}\}/g,
-          (_, raw) => vueey.parse(raw).call(vueey.This)
+          (_, raw) => vueey.infuse(vueey.This, raw)()
         ))
       )
     ),
@@ -80,7 +78,7 @@ function Vue(opt) {
       ? vueey.walk(walker.currentNode, walker)
       : opt.mounted?.call(vueey.This)
   ),
-  vueey.walk(vueey.$el, document.createTreeWalker(vueey.$el, NodeFilter.SHOW_ALL)),
+  vueey.walk(vueey.el, document.createTreeWalker(vueey.el, NodeFilter.SHOW_ALL)),
   vueey.forof(
     Object.entries(opt.watch ?? Object.create(null)),
     ([key, fn]) => (

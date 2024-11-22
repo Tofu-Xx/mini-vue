@@ -7,7 +7,7 @@ function Vue(opt = {}) {
     set: (...args) => [Reflect.set(...args), _deps[args[1]]?.forEach(f => f?.())][0],
   }), opt.methods, { $el, $refs: {} });
   const thisKeyRex = RegExp(Object.keys(This).join('\\b|').replaceAll('$', '\\$'), 'g');
-  const parseExpression = (raw, preCode = 'return ') => Function('$event', preCode + raw.trim().replace(thisKeyRex, k => 'this.' + k));
+  const infuse = ( raw, preCode = 'return ') => Function('$event', preCode + raw.trim().replace(thisKeyRex, k => 'this.' + k)).bind(This);
   const effect = (fn) => (_active = fn, fn());
   const walk = (walker) => {
     const node = walker.currentNode;
@@ -15,14 +15,14 @@ function Vue(opt = {}) {
     if (nodeType == Node.ELEMENT_NODE) for (const { name, value: raw } of node.attributes) {
       const bindName = name.slice(1);
       if (name[0] == '@')
-        node['on' + bindName] = (/[^\s\w$]/.test(raw) ? parseExpression(raw, '') : This[raw.trim()])?.bind(This);
+        node['on' + bindName] = /[^\s\w$]/.test(raw) ? infuse(raw, '') : This[raw.trim()]?.bind(This);
       if (name[0] == ':')
-        effect(() => node.setAttribute(bindName, node[bindName] = parseExpression(raw).call(This)));
+        effect(() => node.setAttribute(bindName, node[bindName] = infuse(raw)()));
       if (name == 'ref')
         This.$refs[raw] = node;
     }
     if (nodeType == Node.TEXT_NODE)
-      effect(() => node.data = data.replace(/\{\{([^]*?)\}\}/g, (_, raw) => parseExpression(raw).call(This)));
+      effect(() => node.data = data.replace(/\{\{([^]*?)\}\}/g, (_, raw) => infuse(raw)()));
     if (walker.nextNode()) walk(walker);
     else opt.mounted?.call(This);
   };
