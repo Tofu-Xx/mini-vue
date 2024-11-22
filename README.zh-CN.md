@@ -19,7 +19,9 @@ interface Options {
   data?: object
   methods?: Record<string, Function>
   watch?: Record<string, (val: any, oldVal: any) => void>
+  created?: Function
   mounted?: Function
+  updated?: Function
 }
 ```
 
