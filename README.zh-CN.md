@@ -36,6 +36,7 @@ interface Options {
 
 ### ⌨️ 精彩 的 源码
 - [vue.js](./vue.js)
+- [vue.min.js](./vue.min.js) *已压缩*
 
 ### 🩻 魔鬼 的 版本
 **游戏规则：**
@@ -43,4 +44,4 @@ interface Options {
 目标是使用尽可能少行数。
 
 - [vue.devil.js](./vue.devil.js)
-- [vue.undevil.js](./vue.undevil.js)
+- [vue.undevil.js](./vue.undevil.js) *已展开*

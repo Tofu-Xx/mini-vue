@@ -36,6 +36,7 @@ interface Options {
 
 ### ⌨️ Source Code
 - [vue.js](./vue.js)
+- [vue.min.js](./vue.min.js) *Compressed*
 
 ### 🩻 Devil Version
 
@@ -45,4 +46,4 @@ The goal is to use as few lines as possible.
    
 
 - [vue.devil.js](./vue.devil.js)
-- [vue.undevil.js](./vue.undevil.js)
+- [vue.undevil.js](./vue.undevil.js) *Expanded*
