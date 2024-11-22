@@ -1,8 +1,9 @@
 function Vue(opt = {}) {
   let _active;
+  let _isUpdating = false;
   const _deps = {};
-  const $el = opt.el?.at ? document.querySelector(opt.el) : opt.el ?? document;
   const $refs = {};
+  const $el = opt.el?.at ? document.querySelector(opt.el) : opt.el ?? document;
   const This = Object.assign(new Proxy(opt.data, {
     get: (...args) => [Reflect.get(...args), (_deps[args[1]] ??= new Set()).add(_active)][0],
     set: (...args) => [Reflect.set(...args), _deps[args[1]]?.forEach(f => f?.())][0],
@@ -36,44 +37,13 @@ function Vue(opt = {}) {
   }
   opt.created?.call(This);
   compiler($el);
-
-  let pending = false;
-
- _active = () => {
-  if (pending) return;
-  pending = true;
-  requestAnimationFrame(() => {
-    pending = false;
-    opt.updated?.call(This);
-  });
-};
-
-  opt.mounted?.call(This);
-};
-
-
-// let isUpdating = false
-// _active = () => {
-//   if (isUpdating) return;
-//   isUpdating = true;
-//   return Promise.resolve().then(() => {
-//     opt.updated?.call(This);
-//     isUpdating = false;
-//   });
-// };
-
-/* let timeoutId = null;
-
-_active = () => {
- if (timeoutId) return;
- timeoutId = setTimeout(() => {
-   timeoutId = null;
-   opt.updated?.call(This);
- }, 0);
-}; */
-
-/* _active = () => {
-    return Promise.resolve().then(() => {
+  _active = () => {
+    if (_isUpdating) return;
+    _isUpdating = true;
+    requestAnimationFrame(() => {
+      _isUpdating = false;
       opt.updated?.call(This);
     });
-  }; */
+  };
+  opt.mounted?.call(This);
+};
