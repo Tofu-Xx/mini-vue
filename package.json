@@ -22,7 +22,7 @@
 		"*.js"
 	],
 	"scripts": {
-		"release": "bumpp -no-push && nr build && pnpm publish",
+		"release": "bumpp -no-push && pnpm publish",
 		"up": "taze major -I",
 		"build": "swc vue.js -o vue.min.js"
 	},

@@ -69,10 +69,9 @@ function Vue(opt) {
         Reflect.deleteProperty(this.compiler, '_bind')
       )),
       node.nodeType == Node.TEXT_NODE && (
-        console.log(this),
-        node.__raw_tem__ = node.data,
+        node.__tem__ = node.data,
         this.reactivity.effect(() => (
-          node.data = node.__raw_tem__.replace(
+          node.data = node.__tem__.replace(
             /\{\{(.*?)\}\}/g,
             (_, raw) => this.infuse(this.This, raw)()
           ))
