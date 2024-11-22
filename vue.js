@@ -1,9 +1,9 @@
 function Vue(opt = {}) {
   let _active;
-  let _isUpdating = false;
+  let isUpdating = false;
   const _deps = {};
   const $refs = {};
-  const $el = opt.el?.at ? document.querySelector(opt.el) : opt.el ?? document;
+  const $el = document.querySelector(opt.el) ?? document;
   const This = Object.assign(new Proxy(opt.data, {
     get: (...args) => [Reflect.get(...args), (_deps[args[1]] ??= new Set()).add(_active)][0],
     set: (...args) => [Reflect.set(...args), _deps[args[1]]?.forEach(f => f?.())][0],
@@ -38,10 +38,10 @@ function Vue(opt = {}) {
   opt.created?.call(This);
   compiler($el);
   _active = () => {
-    if (_isUpdating) return;
-    _isUpdating = true;
+    if (isUpdating) return;
+    isUpdating = true;
     requestAnimationFrame(() => {
-      _isUpdating = false;
+      isUpdating = false;
       opt.updated?.call(This);
     });
   };

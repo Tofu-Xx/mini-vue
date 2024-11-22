@@ -15,7 +15,7 @@
 
 ```ts
 interface Options {
-  el?: string | Element
+  el?: string 
   data?: object
   methods?: Record<string, Function>
   watch?: Record<string, (val: any, oldVal: any) => void>
