@@ -8,10 +8,10 @@
   <a href="./README.md">English</a> | <b>简体中文</b>
 </p>
 
-本项目将还原出尽可能多的Vue核心功能，   
-并始终保持体积在 **1024** 字节以内。   
+本项目将尽可能多还原出Vue核心功能，
+并始终保持打包后的代码体积在 **1024** 字节以内。   
 
-### 🎉 完成 的 功能
+### 🎉 已有 的 功能
 
 ```ts
 interface Options {
@@ -30,18 +30,17 @@ interface Options {
  `this.$refs`
  `this.$el`
 
-### 🎯 使用 的 示例
+### 🎯 展示 的 用例
 - [demon](./examples/demon.html)
 - [counter](./examples/counter.html)
 
-### ⌨️ 实现 的 源码
+### ⌨️ 精彩 的 源码
 - [vue.js](./vue.js)
 
 ### 🩻 魔鬼 的 版本
 **游戏规则：**
-- `{`和`;`后必须换行
-- `}`前必须换行
-- 除非他们在正则表达式中    
+`{`和`;`后必须换行，`}`前必须换行，除非他们在正则表达式中。
+目标是使用尽可能少行数。
 
 - [vue.devil.js](./vue.devil.js)
 - [vue.undevil.js](./vue.undevil.js)

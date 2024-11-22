@@ -8,8 +8,8 @@
   <b>English</b> | <a href="./README.zh-CN.md">简体中文</a>
 </p>
 
-This project will reproduce as many Vue core features as possible,   
-while keeping the size within 1024 bytes.   
+This project will restore as many Vue core functions as possible.
+And always keep the packaged code volume within **1024** bytes.
 
 ### 🎉 Achieved Property
 
@@ -40,9 +40,9 @@ interface Options {
 ### 🩻 Devil Version
 
 **Rules of the game:**
-- `{` and `;` must be wrapped after
-- `}` must be wrapped before
-- unless they are in a regular expression.   
+`{` and `;` must be wrapped after, `}` must be wrapped before, unless they are in a regular expression.
+The goal is to use as few lines as possible.
+   
 
 - [vue.devil.js](./vue.devil.js)
 - [vue.undevil.js](./vue.undevil.js)
