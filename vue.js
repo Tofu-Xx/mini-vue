@@ -31,7 +31,7 @@ function Vue(opt = {}) {
     let oldVal = This[key];
     _deps[key].add(() => Promise.resolve().then(() => {
       const val = This[key];
-      if (val === oldVal) return;
+      if (val == oldVal) return;
       fn.call(This, val, oldVal);
       oldVal = val;
     }));
@@ -46,5 +46,5 @@ function Vue(opt = {}) {
       opt.updated?.call(This);
     });
   };
-  opt.mounted?.bind(This)
+  opt.mounted?.call(This)
 };
