@@ -7,8 +7,7 @@ function Vue(opt = {}) {
     get: (...args) => [Reflect.get(...args), (_deps[args[1]] ??= new Set()).add(_active)][0],
     set: (...args) => [Reflect.set(...args), _deps[args[1]]?.forEach(f => f?.())][0],
   }), opt.methods, { $el, $refs });
-  const thisKeyRex = RegExp(Object.keys(This).map(k => `(?<![A-Za-z0-9_$])${k}(?![A-Za-z0-9_$])`).join('|').replaceAll('$', '\\$'), 'g');
-  console.log(thisKeyRex)
+  const thisKeyRex = RegExp(Object.keys(This).map(k => `(?<![\\w$])${k}(?![\\w$])`).join('|').replace(/\$/g, '\\$'), 'g');
   const infuse = (raw, preCode = 'return ') => Function('$event', preCode + raw.trim().replace(thisKeyRex, k => 'this.' + k)).bind(This);
   const effect = (fn) => (_active = fn, fn());
   const compiler = (node, walker = document.createTreeWalker(node, NodeFilter.SHOW_ALL)) => {
@@ -23,7 +22,7 @@ function Vue(opt = {}) {
         This.$refs[raw] = node;
     }
     if (nodeType == Node.TEXT_NODE)
-      effect(() => node.data = data.replace(/\{\{([^]*?)\}\}/g, (_, raw) => infuse(raw)()));
+      effect(() => node.data = data.replace(/\{\{(.*?)\}\}/gs, (_, raw) => infuse(raw)()));
     if (walker.nextNode()) compiler(walker.currentNode, walker);
     else opt.mounted?.call(This);
   };
