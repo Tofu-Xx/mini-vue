@@ -31,8 +31,8 @@ interface Options {
  `this.$el`
 
 ### 🎯 Use Case
-- [demon](./examples/demon.html)
-- [counter](./examples/counter.html)
+- [opt_drill](./examples/opt_drill.html)
+- [tem_drill](./examples/tem_drill.html)
 
 ### ⌨️ Source Code
 - [vue.js](./vue.js)

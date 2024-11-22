@@ -1,12 +1,11 @@
 <head>
-  <title>Vueey | Counter</title>
+  <title>Vueey | opt Drill</title>
   <link rel="stylesheet" href="https://unpkg.com/@tofukit/resetcss">
   <!-- vueey's writing and effects are the same as the official ones. uncomment to see the official effects -->
   <!-- vueey写法和效果于官方一致，解开注释，查看官方效果 -->
   <!-- <script src="https://unpkg.com/vue@2"></script> -->
   <script src="https://unpkg.com/vueey@latest"></script>
 </head>
-
 
 <body>
   <div id="app">
@@ -21,11 +20,11 @@
   new Vue({
     el: '#app',
     data: {
-      count: 0,
+      count: NaN,
     },
     methods: {
       reached() {
-        alert('You have reached the maximum count!');
+        alert('Count out of range!');
         this.reset();
       },
       reset() {
@@ -34,16 +33,28 @@
     },
     watch: {
       count(val, oldVal) {
-        if (Number.isNaN(val)) {
+        console.log('watch count: ', val);
+        if (Number.isNaN(val))
           this.reset();
-          return;
-        }
+        if (val > 3 || val < 0)
+          this.reached();
         this.$refs.container.innerHTML += `<p>${oldVal} --> ${val}</p>`;
-        if (val > 3) this.reached();
       }
+    },
+    created() {
+      console.log('created $refs: ', JSON.stringify(this.$refs));
+      console.log('created count: ', this.count);
+      this.reset();
     },
     mounted() {
       this.$refs.input.focus();
+    },
+    updated() {
+      console.log('updated count: ' + this.count);
+      const cont = this.$refs.container;
+      if (cont.childElementCount > 3) {
+        cont.removeChild(cont.firstChild);
+      }
     }
   });
 </script>
