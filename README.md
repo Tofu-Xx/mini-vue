@@ -11,7 +11,7 @@
 This project will reproduce as many Vue core features as possible,   
 while keeping the size within 1024 bytes.   
 
-### 🎉 achieved
+### 🎉 Achieved Property
 
 ```ts
 interface Options {
@@ -30,9 +30,19 @@ interface Options {
  `this.$refs`
  `this.$el`
 
-### 🎯 use case
+### 🎯 Use Case
 - [demon](./examples/demon.html)
 - [counter](./examples/counter.html)
 
-### ⌨️ source code
+### ⌨️ Source Code
 - [vue.js](./vue.js)
+
+### 🩻 Devil Version
+
+**Rules of the game:**
+- `{` and `;` must be wrapped after
+- `}` must be wrapped before
+- unless they are in a regular expression.   
+
+- [vue.devil.js](./vue.devil.js)
+- [vue.undevil.js](./vue.undevil.js)

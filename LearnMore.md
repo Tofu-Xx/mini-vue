@@ -2,19 +2,12 @@ The initial motivation was to replicate Vue's core features with minimal code,
 so I set a goal of keeping it under 50 lines.   
 But I realized...   
    
- can replace all 'if-else' statements with ternary operators,   
+can replace all 'if-else' statements with ternary operators,   
 all `for` loops with `forEach` functions,   
 and storing all variable declarations as properties of a top-level object...   
    
 Would make things boring,   
 and the code harder to read and maintain.   
-Performance might also be affected.   
-   
-However, I have also kept a version that is simply for fewer lines of code: [vue.shit.js](./vue.shit.js)   
-**Rules of the game:**
-- `{` and `;` must be wrapped after
-- `}` must be wrapped before
-- unless they are in a regular expression.   
-*<small>For appreciation only, it won't be published on npm.</small>*   
+Performance might also be affected.    
    
 For now, the goal is to keep the bundled code size within 1024 bytes.   

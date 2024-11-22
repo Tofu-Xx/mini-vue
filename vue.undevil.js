@@ -1,4 +1,4 @@
-/* 0.0.3 */
+/* Stop updating at v0.0.3 */
 function Vue(opt) {
   window.vueey = Object.create(null),
   vueey.reactivity = Object.create(null),
