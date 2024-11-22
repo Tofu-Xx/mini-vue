@@ -19,8 +19,7 @@
 	],
 	"main": "./vue.min.js",
 	"files": [
-		"vue.js",
-		"vue.min.js"
+		"*.js"
 	],
 	"scripts": {
 		"release": "bumpp -no-push && nr build && pnpm publish",
