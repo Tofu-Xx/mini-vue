@@ -34,11 +34,9 @@
     watch: {
       count(val, oldVal) {
         console.log('watch count: ', val);
-        if (Number.isNaN(val))
-          this.reset();
-        if (val > 3 || val < 0)
-          this.reached();
-        this.$refs.container.innerHTML += `<p>${oldVal} --> ${val}</p>`;
+        if (Number.isNaN(val)) this.reset();
+        else if (val > 3 || val < 0) this.reached()
+        else this.$refs.container.innerHTML += `<p>${oldVal} --> ${val}</p>`;
       }
     },
     created() {
@@ -48,6 +46,7 @@
     },
     mounted() {
       this.$refs.input.focus();
+      this.count = 1;
     },
     updated() {
       console.log('updated count: ' + this.count);
