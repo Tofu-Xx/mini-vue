@@ -44,6 +44,7 @@ function Vue(opt) {
     ),
     vueey.forof.next()
   ),
+  vueey._binds = [],
   vueey.walk = (node, walker) => (
     node.nodeType == Node.ELEMENT_NODE && vueey.forof(node.attributes, (attr) => (
       'ref' == attr.name && (
@@ -57,11 +58,11 @@ function Vue(opt) {
         )?.bind(vueey.This)
       ),
       ':' == attr.name[0] && (
-        vueey._bindName = attr.name.slice(1),
+        vueey._binds.push(attr.name.slice(1)),
         vueey.effect(
           () => node.setAttribute(
-            vueey._bindName,
-            node[vueey._bindName] = vueey.parse(attr.value).call(vueey.This)
+            vueey._binds.at(-1),
+            node[vueey._binds.at(-1)] = vueey.parse(attr.value).call(vueey.This)
           )
         )
       )
