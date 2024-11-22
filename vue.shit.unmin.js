@@ -44,7 +44,7 @@ function Vue(opt) {
     vueey.forof.next()
   ),
   vueey._binds = [],
-  vueey.walk = (node, walker) => (
+  vueey.compiler = (node, walker = document.createTreeWalker(node, NodeFilter.SHOW_ALL)) => (
     node.nodeType == Node.ELEMENT_NODE && vueey.forof(node.attributes, (attr) => (
       'ref' == attr.name && (
         vueey.This.$refs[attr.value] = node
@@ -75,10 +75,10 @@ function Vue(opt) {
       )
     ),
     walker.nextNode()
-      ? vueey.walk(walker.currentNode, walker)
+      ? vueey.compiler(walker.currentNode, walker)
       : opt.mounted?.call(vueey.This)
   ),
-  vueey.walk(vueey.el, document.createTreeWalker(vueey.el, NodeFilter.SHOW_ALL)),
+  vueey.compiler(vueey.el),
   vueey.forof(
     Object.entries(opt.watch ?? Object.create(null)),
     ([key, fn]) => (
