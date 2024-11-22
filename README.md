@@ -40,7 +40,7 @@ interface Options {
 ### 🩻 Devil Version
 
 **Rules of the game:**
-`{` and `;` must be wrapped after, `}` must be wrapped before, unless they are in a regular expression.
+**`{`** and **`;`** must be wrapped after, **`}`** must be wrapped before, unless they are in a regular expression.
 The goal is to use as few lines as possible.
    
 
