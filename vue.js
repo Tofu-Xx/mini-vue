@@ -23,10 +23,9 @@ function Vue(opt = {}) {
     }
     if (nodeType == Node.TEXT_NODE)
       effect(() => node.data = tem.replace(/\{\{(.*?)\}\}/gs, (_, raw) => infuse(raw)()));
-    if (walker.nextNode()) compiler(walker.currentNode, walker);
-    else opt.mounted?.call(This);
+    if (walker.nextNode())
+      compiler(walker.currentNode, walker);
   };
-  compiler($el);
   for (const [key, fn] of Object.entries(opt.watch ?? {})) {
     let oldVal = This[key];
     _deps[key].add(() => Promise.resolve().then(() => {
@@ -35,4 +34,8 @@ function Vue(opt = {}) {
       oldVal = val;
     }));
   }
+  opt.created?.call(This);
+  compiler($el);
+  _active = () => Promise.resolve().then(opt.updated?.bind(This));
+  opt.mounted?.call(This);
 };
