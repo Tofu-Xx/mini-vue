@@ -28,7 +28,7 @@
 	},
 	"devDependencies": {
 		"@swc/cli": "^0.5.1",
-		"@swc/core": "^1.9.2",
+		"@swc/core": "^1.9.3",
 		"bumpp": "^9.8.1",
 		"taze": "^0.18.0"
 	},
