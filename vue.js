@@ -7,7 +7,7 @@ function Vue(opt = {}) {
   const $el = doc.querySelector(opt.el) ?? doc;
   const This = obj.assign(new Proxy(opt.data, {
     get: (...args) => [rft.get(...args), (_deps[args[1]] ??= new Set()).add(_active)][0],
-    set: (...args) => [rft.set(...args), _deps[args[1]]?.forEach(f => f?.())][0],
+    set: (...args) => [rft.set(...args), queueMicrotask(() => _deps[args[1]]?.forEach(f => f?.()))][0],
   }), opt.methods, { $el, $refs });
   const thisKeyRex = RegExp(obj.keys(This).map(k => `(?<![\\w$])${k}(?![\\w$])`).join('|').replace(/\$/g, '\\$'), 'g');
   const infuse = (raw, preCode = 'return ') => Function('$event', preCode + raw.trim().replace(thisKeyRex, k => 'this.' + k)).bind(This);
@@ -42,7 +42,7 @@ function Vue(opt = {}) {
   _active = () => {
     if (isUpdating) return;
     isUpdating = true;
-    requestAnimationFrame(() => {
+    setTimeout(() => {
       isUpdating = false;
       opt.updated?.call(This);
     });
