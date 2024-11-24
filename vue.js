@@ -1,18 +1,17 @@
 function Vue(opt = {}) {
-  const doc = document, obj = Object, rft = Reflect;
   let _active;
   let isUpdating = false;
   const _deps = {};
   const $refs = {};
-  const $el = doc.querySelector(opt.el) ?? doc;
-  const This = obj.assign(new Proxy(opt.data, {
-    get: (...args) => [rft.get(...args), (_deps[args[1]] ??= new Set()).add(_active)][0],
-    set: (...args) => [rft.set(...args), queueMicrotask(() => _deps[args[1]]?.forEach(f => f?.()))][0],
+  const $el = document.querySelector(opt.el) ?? document;
+  const This = Object.assign(new Proxy(opt.data, {
+    get: (...args) => [Reflect.get(...args), (_deps[args[1]] ??= new Set()).add(_active)][0],
+    set: (...args) => [Reflect.set(...args), queueMicrotask(() => _deps[args[1]]?.forEach(f => f?.()))][0],
   }), opt.methods, { $el, $refs });
-  const thisKeyRex = RegExp(obj.keys(This).map(k => `(?<![\\w$])${k}(?![\\w$])`).join('|').replace(/\$/g, '\\$'), 'g');
+  const thisKeyRex = RegExp(Object.keys(This).map(k => `(?<![\\w$])${k}(?![\\w$])`).join('|').replace(/\$/g, '\\$'), 'g');
   const infuse = (raw, preCode = 'return ') => Function('$event', preCode + raw.trim().replace(thisKeyRex, k => 'this.' + k)).bind(This);
   const effect = (fn) => (_active = fn, fn());
-  const compiler = (node, walker = doc.createTreeWalker(node, NodeFilter.SHOW_ALL)) => {
+  const compiler = (node, walker = document.createTreeWalker(node, NodeFilter.SHOW_ALL)) => {
     const { nodeType, data: tem } = node;
     if (nodeType == Node.ELEMENT_NODE) for (const { name, value: raw } of node.attributes) {
       const bindName = name.slice(1);
@@ -28,7 +27,7 @@ function Vue(opt = {}) {
     if (walker.nextNode())
       compiler(walker.currentNode, walker);
   };
-  for (const [key, fn] of obj.entries(opt.watch ?? {})) {
+  for (const [key, fn] of Object.entries(opt.watch ?? {})) {
     let oldVal = This[key];
     _deps[key].add(() => queueMicrotask(() => {
       const val = This[key];
