@@ -9,9 +9,11 @@
 
 <body>
   <div id="app">
-    <button @click="count--">dec</button>
-    <input ref="input" :value="count" @input="count = $event.target.value">
-    <button @click="count++">inc</button>
+    <button @click="btn_count++">{{ btn_count }}</button>
+    <br><br>
+    <button @click="ipt_count--">dec</button>
+    <input ref="input" :value="ipt_count" @input="ipt_count = $event.target.value">
+    <button @click="ipt_count++">inc</button>
     <div ref="container"></div>
   </div>
 </body>
@@ -20,7 +22,8 @@
   new Vue({
     el: '#app',
     data: {
-      count: NaN,
+      ipt_count: NaN,
+      btn_count: 0
     },
     methods: {
       reached() {
@@ -32,24 +35,27 @@
       }
     },
     watch: {
-      count(val, oldVal) {
-        console.log('watch count: ', val);
+      ipt_count(val, oldVal) {
+        console.log('watch ipt_count: ', val);
+        console.log('watch btn_count: ', this.btn_count)
         if (Number.isNaN(val)) this.reset();
-        else if (val > 3 || val < 0) this.reached()
+        else if (val > 3 || val < 0) this.reached();
         else this.$refs.container.innerHTML += `<p>${oldVal} --> ${val}</p>`;
       }
     },
     created() {
       console.log('created $refs: ', JSON.stringify(this.$refs));
-      console.log('created count: ', this.count);
+      console.log('created ipt_count: ', this.ipt_count);
       this.reset();
     },
     mounted() {
       this.$refs.input.focus();
-      this.count = 1;
+      this.ipt_count = 3;
+      this.$refs.input.value = 0;
+      console.dir(this.$refs.input);
     },
     updated() {
-      console.log('updated count: ' + this.count);
+      console.log('updated ipt_count: ' + this.ipt_count);
       const cont = this.$refs.container;
       if (cont.childElementCount > 3) {
         cont.removeChild(cont.firstChild);
