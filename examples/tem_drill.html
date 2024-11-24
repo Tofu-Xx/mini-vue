@@ -1,8 +1,10 @@
+The writing and effects shown below are the same as the official ones. <br>
+以下展示的写法和效果于官方一致 <br>
+
 <head>
   <title>Vueey | tem Drill</title>
   <link rel="stylesheet" href="https://unpkg.com/@tofukit/resetcss">
-  <!-- vueey's writing and effects are the same as the official ones. uncomment to see the official effects -->
-  <!-- vueey写法和效果于官方一致，解开注释，查看官方效果 -->
+  <!-- 解开注释，查看官方效果 | uncomment to see the official effects -->
   <!-- <script src="https://unpkg.com/vue@2"></script> -->
   <script src="https://unpkg.com/vueey@latest"></script>
 </head>
@@ -11,7 +13,7 @@
   <div id="app">
     <!-- {{ }} -->
     <h1>hello {{ name }}</h1>
-    <p>{{ count }} * 2 = {{ count * 2 }}</p> 
+    <p>{{ count }} * 2 = {{ count * 2 }}</p>
     <!-- @event -->
     <button @click="inc">inc</button>
     <button @click="inc()">inc()</button>
@@ -43,12 +45,8 @@
       ipt(evt) {
         this.name = evt.target.value;
       },
-      log(str) {
-        console.log(str);
-      },
-      getPh() {
-        return 'change me';
-      }
+      log: console.log,
+      getPh: () => 'change me'
     }
   })
 </script>
