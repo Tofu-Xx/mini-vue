@@ -4,10 +4,10 @@ function Vue(opt = {}) {
   const _deps = {};
   const $refs = {};
   const $el = document.querySelector(opt.el) ?? document;
-  const This = Object.assign(new Proxy(opt.data, {
+  const This = Object.assign(new Proxy( { $el, $refs }, {
     get: (...args) => [Reflect.get(...args), (_deps[args[1]] ??= new Set()).add(_active)][0],
     set: (...args) => [Reflect.set(...args), queueMicrotask(() => _deps[args[1]]?.forEach(f => f?.()))][0],
-  }), opt.methods, { $el, $refs });
+  }), opt.methods,opt.data);
   const thisKeyRex = RegExp(Object.keys(This).map(k => `(?<![\\w$])${k}(?![\\w$])`).join('|').replace(/\$/g, '\\$'), 'g');
   const infuse = (raw, preCode = 'return ') => Function('$event', preCode + raw.replace(thisKeyRex, k => 'this.' + k).trim()).bind(This);
   const effect = (fn) => (_active = fn, fn());
