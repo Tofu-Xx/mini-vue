@@ -10,7 +10,7 @@ The writing and effects shown below are the same as the official ones. <br>
 </head>
 
 <body>
-  <div id="app">
+  <div id="app" @updated="log('updated')">
     <!-- {{ }} -->
     <h1>hello {{ name }}</h1>
     <p>
@@ -44,7 +44,7 @@ The writing and effects shown below are the same as the official ones. <br>
     data: {
       name: 'Vueey',
       count: 0,
-      showKeyRefStr: 'showKey'
+      showKeyRefStr: 'showKey',
     },
     methods: {
       inc() {
@@ -55,6 +55,10 @@ The writing and effects shown below are the same as the official ones. <br>
       },
       log: console.log,
       getPh: () => 'change me'
+    },
+    updated() {
+      const event = new Event('updated');
+      this.$el.dispatchEvent(event);
     }
   })
 </script>
