@@ -16,7 +16,6 @@ function Vue(opt = {}) {
     if (nodeType == Node.ELEMENT_NODE) for (const { name, value: raw } of node.attributes) {
       const bindName = name.slice(1);
       if (name[0] == '@')
-      // node['on' + bindName] = /[^\s\w$]/.test(raw) ? infuse(raw, '') : This[raw.trim()]?.bind(This);
       node.addEventListener(bindName, /[^\s\w$]/.test(raw) ? infuse(raw, '') : This[raw.trim()]?.bind(This));
       if (name[0] == ':')
         effect(() => node.setAttribute(bindName, node[bindName] = infuse(raw)()));
@@ -39,13 +38,16 @@ function Vue(opt = {}) {
   }
   opt.created?.call(This);
   compiler($el);
-  _active = () => {
-    if (isUpdating) return;
-    isUpdating = true;
-    setTimeout(() => {
-      isUpdating = false;
-      opt.updated?.call(This);
-    });
-  };
+  /* 为了等待dom的_active收集完毕 */
+  queueMicrotask(() => {
+    _active = () => {
+      if (isUpdating) return;
+      isUpdating = true;
+      setTimeout(() => {
+        isUpdating = false;
+        opt.updated?.call(This);
+      });
+    }
+  })
   opt.mounted?.call(This);
 };
