@@ -1,6 +1,5 @@
 function Vue(opt = {}) {
   let _active;
-  // let isUpdating = false;
   const _deps = {};
   const $refs = {};
   const $el = document.querySelector(opt.el) ?? document;
@@ -12,7 +11,6 @@ function Vue(opt = {}) {
     set: (...args) => [
       Reflect.set(...args),
       queueMicrotask(() => {
-        // console.log(_deps[args[1]]);
         _deps[args[1]]?.forEach(f => f?.());
       })
     ][0],
@@ -36,25 +34,18 @@ function Vue(opt = {}) {
       effect(() => node.data = tem.replace(/\{\{(.*?)\}\}/gs, (_, raw) => infuse(raw)()));
     if (walker.nextNode())
       compiler(walker.currentNode, walker);
-
   };
   for (const [key, fn] of Object.entries(opt.watch ?? {})) {
     let oldVal = This[key];
-    // queueMicrotask(() => {
-
     _deps[key].add(() => {
-      // queueMicrotask(() => {
       const val = This[key];
       if (val == oldVal) return;
       fn.call(This, val, oldVal);
       oldVal = val;
-      // })
-      // });
     });
   }
   opt.created?.call(This);
   compiler($el);
-  /* 等待数据更新后再执行更新函数 */
   queueMicrotask(() => {
     _active = () => {
       if (thisState == (thisState = JSON.stringify(This))) return;
