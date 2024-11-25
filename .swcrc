@@ -48,8 +48,7 @@
         // "module": false,
         "global_defs": {
           "Node.ELEMENT_NODE": 1,
-          "Node.TEXT_NODE": 3,
-          "NodeFilter.SHOW_ALL": 7
+          "Node.TEXT_NODE": 3
         },
         "const_to_let": true, /* const --> let */
         "booleans": true, /* if --> ?: && || */

@@ -19,7 +19,7 @@ function Vue(opt = {}) {
   const thisKeyRex = RegExp(Object.keys(This).map(k => `(?<![\\w$])${k}(?![\\w$])`).join('|').replace(/\$/g, '\\$'), 'g');
   const infuse = (raw, preCode = 'return ') => Function('$event', preCode + raw.replace(thisKeyRex, k => 'this.' + k).trim()).bind(This);
   const effect = (fn) => (_active = fn, fn());
-  const compiler = (node, walker = document.createTreeWalker(node, NodeFilter.SHOW_ALL)) => {
+  const compiler = (node, walker = document.createTreeWalker(node)) => {
     const { nodeType, data: tem } = node;
     if (nodeType == Node.ELEMENT_NODE) for (const { name, value: raw } of node.attributes) {
       const bindName = name.slice(1);
