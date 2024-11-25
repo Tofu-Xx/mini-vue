@@ -1,6 +1,6 @@
 function Vue(opt = {}) {
   let _active;
-  let isUpdating = false;
+  // let isUpdating = false;
   const _deps = {};
   const $refs = {};
   const $el = document.querySelector(opt.el) ?? document;
@@ -17,6 +17,7 @@ function Vue(opt = {}) {
       })
     ][0],
   }), opt.methods, opt.data);
+  let thisState = JSON.stringify(This);
   const thisKeyRex = RegExp(Object.keys(This).map(k => `(?<![\\w$])${k}(?![\\w$])`).join('|').replace(/\$/g, '\\$'), 'g');
   const infuse = (raw, preCode = 'return ') => Function('$event', preCode + raw.replace(thisKeyRex, k => 'this.' + k).trim()).bind(This);
   const effect = (fn) => (_active = fn, fn());
@@ -54,15 +55,13 @@ function Vue(opt = {}) {
   opt.created?.call(This);
   compiler($el);
 
-  queueMicrotask(() => {
-    _active = () => {
-      if (isUpdating) return;
-      isUpdating = true;
-      queueMicrotask(() => {
-        isUpdating = false;
-        opt.updated?.call(This);
-      });
-    };
-  });
+  // queueMicrotask(() => {
+  _active = () => {
+    if (thisState == (thisState = JSON.stringify(This))) return;
+    queueMicrotask(() => {
+      opt.updated?.call(This);
+    });
+  };
+  // });
   opt.mounted?.call(This);
 };
