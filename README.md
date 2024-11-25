@@ -35,6 +35,7 @@ interface Options {
 ### 🎯 Use Case
 - [opt_drill](./examples/opt_drill.html)
 - [tem_drill](./examples/tem_drill.html)
+- [lifecycle_drill](./examples/lifecycle_drill.html)
 
 ### ⌨️ Source Code
 - [vue.js](./vue.js)

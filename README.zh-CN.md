@@ -35,6 +35,7 @@ interface Options {
 ### 🎯 展示 的 用例
 - [opt_drill](./examples/opt_drill.html)
 - [tem_drill](./examples/tem_drill.html)
+- [lifecycle_drill](./examples/lifecycle_drill.html)
 
 ### ⌨️ 精彩 的 源码
 - [vue.js](./vue.js)
