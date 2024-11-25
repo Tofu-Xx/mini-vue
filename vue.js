@@ -13,7 +13,7 @@ function Vue(opt = {}) {
       Reflect.set(...args),
       queueMicrotask(() => {
         // console.log(_deps[args[1]]);
-        _deps[args[1]]?.forEach(f => f?.());
+        _deps[args[1]]?.forEach(f => f?.())
       })
     ][0],
   }), opt.methods, opt.data);
@@ -60,6 +60,9 @@ function Vue(opt = {}) {
     if (thisState == (thisState = JSON.stringify(This))) return;
     queueMicrotask(() => {
       opt.updated?.call(This);
+      setTimeout(() => {
+        thisState = null;
+      });
     });
   };
   // });
