@@ -1,4 +1,5 @@
 /* https://swc.rs/docs/configuration/minification */
+/* https://terser.org/docs/options/#compress-options */
 {
   "$schema": "https://swc.nodejs.cn/schema.json",
   "minify": true,
@@ -9,7 +10,7 @@
         "toplevel": false
       },
       "compress": {
-        // "defaults": false,
+        "defaults": false,
         // "reduce_funcs": true,
         // "reduce_vars": false,
         // "unsafe": true,
@@ -42,7 +43,6 @@
         // "if_return": false,
         // "evaluate": true,
         // "arrows": true,
-        // "booleans_as_integers": true,
         // "directives": false,
         // "properties": false,
         // "module": false,
@@ -50,12 +50,27 @@
           "Node.ELEMENT_NODE": 1,
           "Node.TEXT_NODE": 3
         },
+        "unsafe_regexp": true,
+        "comparisons": true,
+        "unsafe_comps": true,
+        "unsafe": true,
+        "hoist_props": true,
+        "passes": 2,
+        "evaluate": true,
+        "directives":true,
+        "dead_code": true,
+        "booleans_as_integers": true,
+        "inline": 3,
+        "if_return": true, /* if return */
         "const_to_let": true, /* const --> let */
         "booleans": true, /* if --> ?: && || */
         "sequences": true, /* ; --> (,) */
         "join_vars": true, /* join statement */
         "collapse_vars": false, /* distinguish const and let */
         "unused": false /* global.js */
+      },
+      "format":{
+        "indent_level": 2
       }
     },
     "target": "esnext"
