@@ -11,9 +11,10 @@ function Vue(opt = {}) {
     ][0],
     set: (...args) => [
       Reflect.set(...args),
-      queueMicrotask(() =>
-        _deps[args[1]]?.forEach(f => f?.())
-      )
+      queueMicrotask(() => {
+        // console.log(_deps[args[1]]);
+        _deps[args[1]]?.forEach(f => f?.());
+      })
     ][0],
   }), opt.methods, opt.data);
   const thisKeyRex = RegExp(Object.keys(This).map(k => `(?<![\\w$])${k}(?![\\w$])`).join('|').replace(/\$/g, '\\$'), 'g');
@@ -34,30 +35,34 @@ function Vue(opt = {}) {
       effect(() => node.data = tem.replace(/\{\{(.*?)\}\}/gs, (_, raw) => infuse(raw)()));
     if (walker.nextNode())
       compiler(walker.currentNode, walker);
-    else opt.mounted?.call(This);
+
   };
   for (const [key, fn] of Object.entries(opt.watch ?? {})) {
     let oldVal = This[key];
+    // queueMicrotask(() => {
+
     _deps[key].add(() => {
-      queueMicrotask(() => {
+      // queueMicrotask(() => {
       const val = This[key];
       if (val == oldVal) return;
       fn.call(This, val, oldVal);
       oldVal = val;
-      })
+      // })
+      // });
     });
   }
   opt.created?.call(This);
   compiler($el);
-  /* 为了等待dom的_active收集完毕 */
-  // queueMicrotask(() => {
+
+  queueMicrotask(() => {
     _active = () => {
       if (isUpdating) return;
       isUpdating = true;
-      setTimeout(() => {
-      isUpdating = false;
-      opt.updated?.call(This);
+      queueMicrotask(() => {
+        isUpdating = false;
+        opt.updated?.call(This);
       });
     };
-  // });
+  });
+  opt.mounted?.call(This);
 };
