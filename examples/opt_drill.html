@@ -10,11 +10,9 @@ The writing and effects shown below are the same as the official ones. <br>
 
 <body>
   <div id="app">
-    <button @click="btn_count++">{{ btn_count }}</button>
-    <br><br>
-    <button @click="ipt_count--">dec</button>
-    <input ref="input" :value="ipt_count" @input="ipt_count = $event.target.value">
-    <button @click="ipt_count++">inc</button>
+    <button @click="count--">dec</button>
+    <input ref="input" :value="count" @input="count = $event.target.value">
+    <button @click="count++">inc</button>
     <div ref="container"></div>
   </div>
 </body>
@@ -23,42 +21,40 @@ The writing and effects shown below are the same as the official ones. <br>
   new Vue({
     el: '#app',
     data: {
-      ipt_count: NaN,
-      btn_count: 0
+      count: NaN,
     },
     methods: {
-      reached() {
-        alert('Count out of range!');
-        this.reset();
-      },
-      reset() {
+      init() {
         this.count = 0;
-      }
+      },
+      reached(val) {
+        alert(`${val} is out of range!`);
+        this.init();
+      },
     },
     watch: {
-      ipt_count(val, oldVal) {
-        console.log('watch ipt_count: ', val);
-        console.log('watch btn_count: ', this.btn_count)
-        if (Number.isNaN(val)) this.reset();
-        else if (val > 3 || val < 0) this.reached();
-        else this.$refs.container.innerHTML += `<p>${oldVal} --> ${val}</p>`;
-      }
+      count(val, oldVal) {
+        if (Number.isNaN(val)) {
+          this.init();
+          return;
+        };
+        if (val > 3 || val < 0) this.reached(val);
+        this.$refs.container.innerHTML += `<p>${oldVal} --> ${val}</p>`;
+      }, 
     },
     created() {
-      console.log('created $refs: ', JSON.stringify(this.$refs));
-      console.log('created ipt_count: ', this.ipt_count);
-      this.reset();
+      console.log('(created:$refs)', this.$refs);
+      console.log('(created:count)', this.count);
     },
     mounted() {
+      this.init();
       this.$refs.input.focus();
-      this.ipt_count = 3;
-      this.$refs.input.value = 0;
-      console.dir(this.$refs.input);
+      this.$refs.input.value = 1;
     },
     updated() {
-      console.log('updated ipt_count: ' + this.ipt_count);
+      console.log('(updated:count)' + this.count);
       const cont = this.$refs.container;
-      if (cont.childElementCount > 3) {
+      while (cont.childElementCount > 3) {
         cont.removeChild(cont.firstChild);
       }
     }
