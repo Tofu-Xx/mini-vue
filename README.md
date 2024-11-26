@@ -1,7 +1,3 @@
-<p align="right">
-  <a href="LearnMore.md">learn more</a>
-</p>
-
 <h1 align="center">vueey</h1>
 
 <p align="center">
@@ -44,9 +40,9 @@ interface Options {
 ### 🩻 Devil Version
 
 **Rules of the game:**
-**`{`** and **`;`** must be wrapped after, **`}`** must be wrapped before, unless they are in a regular expression.
+**`{`** and **`;`** must be wrapped after, **`}`** must be wrapped before, unless they are in a regular expression.   
 The goal is to use as few lines as possible.
-   
+<a href="LearnMore.md">learn more</a>
 
 - [vue.devil.js](./vue.devil.js)
 - [vue.undevil.js](./vue.undevil.js) *Expanded*

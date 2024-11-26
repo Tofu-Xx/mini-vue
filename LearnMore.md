@@ -5,18 +5,10 @@ And I found ...
    
 You can replace all `if-else` statements with ternary operators,   
 All `for` loops are replaced by methods,   
-All variable declarations are placed in the properties of a top-level object...   
+All variable declarations are placed in the properties of a object...   
 
 This is where things get weird,   
 The code will become difficult to read and maintain.   
 Performance is also affected.   
-   
-I think it makes more sense to control code size out of pragmatism.
 
-But I did the stupid thing anyway,   
-See [vue.devil.js](./vue.devil.js)
-I know this seems a little unfriendly,
-So I prepared the expanded version [vue.undevil.js](./vue.undevil.js)
-
-The difference is that this version of the Vue instance object,   
-Specially designed. Kind of interesting
+But I did the stupid thing anyway.   
