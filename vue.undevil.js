@@ -49,24 +49,23 @@ function Vue(opt) {
     ),
     this.compiler = (node = this.el, walker = document.createTreeWalker(node, NodeFilter.SHOW_ALL)) => (
       node.nodeType == Node.ELEMENT_NODE && this.forof(node.attributes, (attr) => (
-        this.compiler._bind = attr.name.slice(1),
+        attr.__bind__ = attr.name.slice(1),
         'ref' == attr.name && (
           this.This.$refs[attr.value] = node
         ),
         '@' == attr.name[0] && (
-          node['on' + this.compiler._bind] = /[^\s\w$]/.test(attr.value)
+          node['on' + attr.__bind__] = /[^\s\w$]/.test(attr.value)
             ? this.infuse(this.This, attr.value, '')
             : this.This[attr.value.trim()].bind(this.This)
         ),
         ':' == attr.name[0] && (
           this.reactivity.effect(
             () => node.setAttribute(
-              this.compiler._bind,
-              node[this.compiler._bind] = this.infuse(this.This, attr.value)()
+              attr.__bind__,
+              node[attr.__bind__] = this.infuse(this.This, attr.value)()
             )
           )
-        ),
-        Reflect.deleteProperty(this.compiler, '_bind')
+        )
       )),
       node.nodeType == Node.TEXT_NODE && (
         node.__tem__ = node.data,
