@@ -1,4 +1,5 @@
 function Vue(opt = {}) {
+  const { queueMicrotask, document, Reflect, Object, JSON: { stringify } } = window;
   let _active;
   const _deps = {};
   const $refs = {};
@@ -15,9 +16,9 @@ function Vue(opt = {}) {
       })
     ][0],
   }), opt.methods, opt.data);
-  let thisState = JSON.stringify(This);
+  let thisState = stringify(This);
   const thisKeyRex = RegExp(Object.keys(This).map(k => `(?<![\\w$])${k}(?![\\w$])`).join('|').replace(/\$/g, '\\$'), 'g');
-  const infuse = (raw, preCode = 'return ') => Function('$event', preCode + raw.replace(thisKeyRex, k => 'this.' + k).trim()).bind(This);
+  const infuse = (raw, preCode = 'return ') => Function('$event', preCode + raw.trim().replace(thisKeyRex, k => 'this.' + k)).bind(This);
   const effect = (fn) => (_active = fn, fn());
   const compiler = (node, walker = document.createTreeWalker(node)) => {
     const { nodeType, data: tem } = node;
@@ -48,7 +49,7 @@ function Vue(opt = {}) {
   compiler($el);
   queueMicrotask(() => {
     _active = () => {
-      if (thisState == (thisState = JSON.stringify(This))) return;
+      if (thisState == (thisState = stringify(This))) return;
       queueMicrotask(() => {
         opt.updated?.call(This);
         setTimeout(() => {
