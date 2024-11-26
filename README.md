@@ -9,7 +9,7 @@
 </p>
 
 This project will restore as many Vue core functions as possible.
-And always keep the packaged code volume within **1024** bytes.
+And try to keep the packaged code volume within **1024** bytes.
 
 ### 🎉 Achieved Property
 
