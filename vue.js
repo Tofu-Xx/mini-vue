@@ -5,16 +5,8 @@ function Vue(opt = {}) {
   const $refs = {};
   const $el = document.querySelector(opt.el) ?? document;
   const This = Object.assign(new Proxy({ $el, $refs }, {
-    get: (...args) => [
-      Reflect.get(...args),
-      (_deps[args[1]] ??= new Set()).add(_active)
-    ][0],
-    set: (...args) => [
-      Reflect.set(...args),
-      queueMicrotask(() => {
-        _deps[args[1]]?.forEach(f => f?.());
-      })
-    ][0],
+    get: (...args) => [Reflect.get(...args), (_deps[args[1]] ??= new Set()).add(_active)][0],
+    set: (...args) => [Reflect.set(...args), queueMicrotask(() => _deps[args[1]]?.forEach(f => f?.()))][0],
   }), opt.methods, opt.data);
   let thisState = stringify(This);
   const thisKeyRex = RegExp(Object.keys(This).map(k => `(?<![\\w$])${k}(?![\\w$])`).join('|').replace(/\$/g, '\\$'), 'g');
@@ -52,9 +44,7 @@ function Vue(opt = {}) {
       if (thisState == (thisState = stringify(This))) return;
       queueMicrotask(() => {
         opt.updated?.call(This);
-        setTimeout(() => {
-          thisState = null;
-        });
+        setTimeout(() => (thisState = null));
       });
     };
   });
