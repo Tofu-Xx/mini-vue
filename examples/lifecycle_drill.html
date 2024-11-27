@@ -1,5 +1,6 @@
 The writing and effects shown below are the same as the official ones. <br>
 以下展示的写法和效果于官方一致 <br>
+
 <head>
   <title>Vueey | lifecycle Drill</title>
   <link rel="stylesheet" href="https://unpkg.com/@tofukit/resetcss">
@@ -22,26 +23,26 @@ The writing and effects shown below are the same as the official ones. <br>
       count1: NaN,
       count2: NaN
     },
-    watch:{
-      count1(v,ov){
-        console.log('(watch:count1) ',`${ov} --> ${v}`)
+    watch: {
+      count1(v, ov) {
+        console.log('(watch:count1) ' + `${ov} --> ${v}`);
       },
-      count2(v,ov){
-        console.log('(watch:count2) ',`${ov} --> ${v}`)
+      count2(v, ov) {
+        console.log('(watch:count2) ' + `${ov} --> ${v}`);
       }
     },
-    created(){
-      this.count1 =  this.count2 = 0
-      console.log('(created) count --> 0')
+    created() {
+      this.count1 = this.count2 = 0;
+      console.log('(created) ' + 'count --> 0');
     },
-    mounted(){
-      this.count1 =  this.count2 = 1
-      console.log('(mounted) count --> 1')
+    mounted() {
+      this.count1 = this.count2 = 1;
+      console.log('(mounted) ' + 'count --> 1');
     },
-    updated(){
-      this.count1 = 0
-      console.log('(updated) count1 --> 0')
-      console.log('(updated:count2)',this.count2)
+    updated() {
+      this.count1 = 0;
+      console.log('(updated) ' + 'count1 --> 0');
+      console.log('(updated:count2) ' + this.count2);
     }
   })
 </script>
